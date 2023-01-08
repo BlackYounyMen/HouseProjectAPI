@@ -16,11 +16,6 @@ namespace House.Model
         public int Id { get; set; }
 
         /// <summary>
-        /// 创建时间
-        /// </summary>
-        public DateTime CreateTime { get; set; } = DateTime.Now;
-
-        /// <summary>
         /// 默认页码
         /// </summary>
         [NotMapped]

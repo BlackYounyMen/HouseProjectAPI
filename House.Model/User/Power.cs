@@ -1,12 +1,15 @@
-﻿namespace House.Model
+﻿using SqlSugar;
+using System;
+
+namespace House.Model
 {
     /// <summary>
     /// 权限表
     /// </summary>
-    public class Permission : EntityBase
+    public class Power : EntityBase
     {
         /// <summary>
-        /// 菜单名称
+        /// 部门名称
         /// </summary>
         public string Name { get; set; }
 
@@ -18,16 +21,16 @@
         /// <summary>
         /// 上级Id
         /// </summary>
-        public int PId { get; set; }
+        public int SuperiorId { get; set; }
 
         /// <summary>
-        /// 状态
+        /// 路径
         /// </summary>
-        public bool State { get; set; }
+        public string Url { get; set; }
 
         /// <summary>
         /// 排序
         /// </summary>
-        public int SortId { get; set; }
+        public int OrderId { get; set; }
     }
 }

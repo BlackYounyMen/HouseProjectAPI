@@ -1,7 +1,10 @@
 ﻿using House.Dto;
 using House.IRepository;
+using House.IRepository.User;
 using House.Model;
+using LinqKit;
 using Microsoft.AspNetCore.Mvc;
+using NPOI.SS.Formula.Functions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,13 +20,17 @@ namespace House.API.Controllers
     [ApiExplorerSettings(GroupName = "Login")]
     public class LoginController : ControllerBase
     {
-        private readonly IEmployeeRepository _IEmployeeRepository;
-        private readonly IPermissionRepository _IPermissionRepository;
+        private readonly IPowerRepository _IPowerRepository;
 
-        public LoginController(IEmployeeRepository employeerepository, IPermissionRepository iPermissionRepository)
+        private readonly IRolePowerRepository _IRolePowerRepository;
+
+        private readonly IPersonnelRepository _IPersonnelRepository;
+
+        public LoginController(IPowerRepository ipowerrepository, IRolePowerRepository irolepowerrepository, IPersonnelRepository ipersonnelrepository)
         {
-            _IEmployeeRepository = employeerepository;
-            _IPermissionRepository = iPermissionRepository;
+            _IPowerRepository = ipowerrepository;
+            _IRolePowerRepository = irolepowerrepository;
+            _IPersonnelRepository = ipersonnelrepository;
         }
 
         /// <summary>
@@ -32,9 +39,26 @@ namespace House.API.Controllers
         /// <returns></returns>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult UserLogin()
+        public async Task<Token<Personnel>> UserLogin(string account, string password)
         {
-            return Ok(true);
+            var predicate = PredicateBuilder.New<Personnel>(true);
+            predicate.And(t => t.Account == account && t.Pwd == password);
+
+            var data = await _IPersonnelRepository.FirstOrDefaultAsync(predicate);
+            if (data != null)
+            {
+                Token<Personnel> d = new Token<Personnel>();
+                d.Result = data;
+
+                return d;
+            }
+            else
+            {
+                Token<Personnel> d = new Token<Personnel>();
+                d.Code = 404;
+                d.Message = "你请求的数据不对";
+                return d;
+            }
         }
 
         /// <summary>
@@ -42,10 +66,10 @@ namespace House.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public List<Employee> GetAll()
+        public List<RolePower> GetAll()
         {
-            List<Employee> data = new List<Employee>();
-            data = _IEmployeeRepository.GetAllList();
+            List<RolePower> data = new List<RolePower>();
+            data = _IRolePowerRepository.GetAllList();
             return data;
         }
 
@@ -56,16 +80,16 @@ namespace House.API.Controllers
         public async Task<List<Menu>> GetMenu()
         {
             //到时候只需要更改这样，就可以更改他的权限
-            var data = await _IPermissionRepository.GetAllListAsync();
+            var data = await _IPowerRepository.GetAllListAsync();
             //0表示读取省级城市
-            var nodes = data.Where(d => d.PId == 0).ToList();
+            var nodes = data.Where(d => d.SuperiorId == 0).ToList();
             var q = from n in nodes
                     select new Menu()
                     {
                         name = n.Name,
                         icon = n.Icon,
                         Id = n.Id,
-                        PId = n.PId,
+                        PId = n.SuperiorId,
                         path = n.Name,
                     };
             List<Menu> list = q.ToList();
@@ -82,15 +106,15 @@ namespace House.API.Controllers
         {
             foreach (var n in dtolist)
             {
-                var data = _IPermissionRepository.GetAllList();
-                var n_1 = data.Where(d => d.PId == n.Id).ToList();
+                var data = _IPowerRepository.GetAllList();
+                var n_1 = data.Where(d => d.SuperiorId == n.Id).ToList();
                 var q_1 = from node in n_1
                           select new Menu()
                           {
                               name = node.Name,
                               icon = node.Icon,
                               Id = node.Id,
-                              PId = node.PId,
+                              PId = node.SuperiorId,
                               path = node.Name,
                           };
 

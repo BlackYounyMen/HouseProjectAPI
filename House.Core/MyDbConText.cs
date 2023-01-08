@@ -12,12 +12,12 @@ namespace House.Core
         /// <summary>
         /// 人员
         /// </summary>
-        public virtual DbSet<Employee> Employee { get; set; }
+        public virtual DbSet<Personnel> Personnel { get; set; }
 
         /// <summary>
         /// 角色用户关联表
         /// </summary>
-        public virtual DbSet<EmployeeRole> EmployeeRole { get; set; }
+        public virtual DbSet<PersonnelRole> PersonnelRole { get; set; }
 
         /// <summary>
         /// 角色表
@@ -27,11 +27,11 @@ namespace House.Core
         /// <summary>
         /// 权限角色关联
         /// </summary>
-        public virtual DbSet<RolePermission> RolePermission { get; set; }
+        public virtual DbSet<RolePower> RolePower { get; set; }
 
         /// <summary>
         /// 权限表
         /// </summary>
-        public virtual DbSet<Permission> Permission { get; set; }
+        public virtual DbSet<Power> Power { get; set; }
     }
 }

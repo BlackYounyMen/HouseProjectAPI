@@ -1,9 +1,12 @@
-﻿namespace House.Model
+﻿using SqlSugar;
+using System;
+
+namespace House.Model
 {
     /// <summary>
     /// 权限角色关联
     /// </summary>
-    public class RolePermission : EntityBase
+    public class RolePower : EntityBase
     {
         /// <summary>
         ///  角色Id
@@ -13,6 +16,6 @@
         /// <summary>
         ///  角色Id
         /// </summary>
-        public int PermissionId { get; set; }
+        public int PowerId { get; set; }
     }
 }

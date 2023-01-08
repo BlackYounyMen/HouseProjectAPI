@@ -1,4 +1,7 @@
-﻿namespace House.Model
+﻿using SqlSugar;
+using System;
+
+namespace House.Model
 {
     /// <summary>
     /// 角色表
@@ -9,5 +12,10 @@
         /// 角色名称
         /// </summary>
         public string RoleName { get; set; }
+
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public string State { get; set; }
     }
 }
