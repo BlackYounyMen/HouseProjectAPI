@@ -3,6 +3,7 @@ using House.IRepository;
 using House.IRepository.User;
 using House.Model;
 using House.Repository;
+using House.Repository.User;
 using LinqKit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -57,6 +58,21 @@ namespace House.API.Controllers.User
         {
             var state = await _IRoleRepository.InsertAsync(role);
             return state;
+        }
+
+        /// <summary>
+        /// 数据页面第一次加载
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<Token<Role>> Recoil(int id)
+        {
+            var predicate = PredicateBuilder.New<Role>(true);
+            predicate.And(t => t.Id == id);
+
+            Token<Role> d = new Token<Role>();
+            d.Result = await _IRoleRepository.FirstOrDefaultAsync(predicate);
+            return d;
         }
 
         /// <summary>

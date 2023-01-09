@@ -8,6 +8,7 @@ using System.Linq;
 using House.Model;
 using LinqKit;
 using System;
+using House.Repository;
 
 namespace House.API.Controllers.User
 {
@@ -78,6 +79,21 @@ namespace House.API.Controllers.User
         {
             var state = await _IPowerRepository.InsertAsync(power);
             return state;
+        }
+
+        /// <summary>
+        /// 数据页面第一次加载
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<Token<Power>> Recoil(int id)
+        {
+            var predicate = PredicateBuilder.New<Power>(true);
+            predicate.And(t => t.Id == id);
+
+            Token<Power> d = new Token<Power>();
+            d.Result = await _IPowerRepository.FirstOrDefaultAsync(predicate);
+            return d;
         }
 
         /// <summary>

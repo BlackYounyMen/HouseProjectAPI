@@ -61,6 +61,21 @@ namespace House.API.Controllers.User
         }
 
         /// <summary>
+        /// 数据页面第一次加载
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<Token<Personnel>> Recoil(int id)
+        {
+            var predicate = PredicateBuilder.New<Personnel>(true);
+            predicate.And(t => t.Id == id);
+
+            Token<Personnel> d = new Token<Personnel>();
+            d.Result = await _IPersonnelRepository.FirstOrDefaultAsync(predicate);
+            return d;
+        }
+
+        /// <summary>
         /// 权限数据修改
         /// </summary>
         /// <param name="power"></param>
