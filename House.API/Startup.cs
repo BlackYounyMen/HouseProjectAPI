@@ -96,6 +96,9 @@ namespace House.API
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/Login/swagger.json", "登录管理");
+                c.SwaggerEndpoint("/swagger/Power/swagger.json", "权限管理");
+                c.SwaggerEndpoint("/swagger/Role/swagger.json", "角色管理");
+                c.SwaggerEndpoint("/swagger/Personnel/swagger.json", "人员管理");
             });
         }
 
@@ -108,7 +111,21 @@ namespace House.API
                     Version = "v1.0.0",
                     Title = "登录管理"
                 });
-
+                options.SwaggerDoc("Power", new OpenApiInfo
+                {
+                    Version = "v1.0.0",
+                    Title = "权限管理"
+                });
+                options.SwaggerDoc("Role", new OpenApiInfo
+                {
+                    Version = "v1.0.0",
+                    Title = "角色管理"
+                });
+                options.SwaggerDoc("Personnel", new OpenApiInfo
+                {
+                    Version = "v1.0.0",
+                    Title = "人员管理"
+                });
                 //按照分组取api文档
                 options.DocInclusionPredicate((docName, apiDes) =>
                 {

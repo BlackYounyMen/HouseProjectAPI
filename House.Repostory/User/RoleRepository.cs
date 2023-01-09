@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace House.Repository.User
+namespace House.Repository
 {
     public class RoleRepository : BaseService<Role>, IRoleRepository
     {

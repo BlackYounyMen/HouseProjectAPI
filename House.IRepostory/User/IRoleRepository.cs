@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace House.IRepository.User
+namespace House.IRepository
 {
     public interface IRoleRepository : IBaseService<Role>
     {
