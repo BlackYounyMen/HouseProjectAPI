@@ -90,7 +90,7 @@ namespace House.API.Controllers
                         icon = n.Icon,
                         Id = n.Id,
                         PId = n.SuperiorId,
-                        path = n.Name,
+                        path = n.Url,
                     };
             List<Menu> list = q.ToList();
 
@@ -115,7 +115,7 @@ namespace House.API.Controllers
                               icon = node.Icon,
                               Id = node.Id,
                               PId = node.SuperiorId,
-                              path = node.Name,
+                              path = node.Url,
                           };
 
                 List<Menu> list = q_1.ToList();
