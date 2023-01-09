@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using House.Model;
 using LinqKit;
+using System;
 
 namespace House.API.Controllers.User
 {
@@ -30,14 +31,16 @@ namespace House.API.Controllers.User
         /// </summary>
         /// <param name="entityBase"></param>
         /// <returns></returns>
-        [HttpPost]
-        public async Task<PageModel<Power>> GetData(EntityBase entityBase)
+        [HttpGet]
+        public async Task<PageModel<Power>> GetData(int pageindex, int pagesize)
         {
-            var predicate = PredicateBuilder.New<Power>(true);
-            var data = await _IPowerRepository.GetAllListAsync(predicate, entityBase);
-            PageModel<Power> List = new PageModel<Power>();
-            List.Data = data;
-            return List;
+            var data = await _IPowerRepository.GetAllListAsync();
+
+            PageModel<Power> datalist = new PageModel<Power>();
+            datalist.PageCount = data.Count();
+            datalist.PageSize = Convert.ToInt32(Math.Ceiling((data.Count * 1.0 / pagesize)));
+            datalist.Data = data.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+            return datalist;
         }
 
         /// <summary>

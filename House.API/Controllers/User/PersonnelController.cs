@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using House.Model;
 using House.Dto;
 using System.Linq;
+using System;
 
 namespace House.API.Controllers.User
 {
@@ -28,6 +29,23 @@ namespace House.API.Controllers.User
         {
             _IPersonnelRepository = iPersonnelRepository;
             _IPersonnelRoleRepository = iPersonnelRoleRepository;
+        }
+
+        /// <summary>
+        /// 数据显示
+        /// </summary>
+        /// <param name="entityBase"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<PageModel<Personnel>> GetData(int pageindex, int pagesize)
+        {
+            var data = await _IPersonnelRepository.GetAllListAsync();
+
+            PageModel<Personnel> datalist = new PageModel<Personnel>();
+            datalist.PageCount = data.Count();
+            datalist.PageSize = Convert.ToInt32(Math.Ceiling((data.Count * 1.0 / pagesize)));
+            datalist.Data = data.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+            return datalist;
         }
 
         /// <summary>
@@ -74,10 +92,10 @@ namespace House.API.Controllers.User
         /// <param name="rid"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<List<Branch>> RoleLoad(int rid)
+        public async Task<List<Branch>> PersonnelLoad(int rid)
         {
             var predicate = PredicateBuilder.New<PersonnelRole>(true);
-            predicate.And(t => t.Id == rid);
+            predicate.And(t => t.PersonnelId == rid);
             var data = await _IPersonnelRoleRepository.GetAllListAsync(predicate);
             var q = from n in data
                     select new Branch()
@@ -89,17 +107,21 @@ namespace House.API.Controllers.User
         }
 
         /// <summary>
-        /// 可以根据他的数据进行重新绑定角色
+        /// 可以根据他的数据进行重新绑定权限
         /// </summary>
         /// <param name="rid"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<bool> RPDelete(List<int> id)
+        public async Task<bool> RPDelete(List<PersonnelRole> data)
         {
             var predicate = PredicateBuilder.New<PersonnelRole>(true);
-            predicate.And(t => id.Contains(t.Id));
-            var state = await _IPersonnelRoleRepository.DeleteAsync(predicate);
-            return state;
+            predicate.And(t => t.RoleId == data[0].RoleId);
+            await _IPersonnelRoleRepository.DeleteAsync(predicate);
+            foreach (var item in data)
+            {
+                await _IPersonnelRoleRepository.InsertAsync(item);
+            }
+            return true;
         }
     }
 }

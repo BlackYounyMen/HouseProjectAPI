@@ -13,24 +13,26 @@ namespace House.API.Controllers
 
 {
     /// <summary>
-    /// 用户登录控制   器
+    /// 用户登录控制器
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "Login")]
     public class LoginController : ControllerBase
     {
+        private readonly IPersonnelRepository _IPersonnelRepository;
+        private readonly IPersonnelRoleRepository _IPersonnelRoleRepository;
+        private readonly IRoleRepository _IRoleRepository;
+        private readonly IRolePowerRepository _IRolePowerRepository;
         private readonly IPowerRepository _IPowerRepository;
 
-        private readonly IRolePowerRepository _IRolePowerRepository;
-
-        private readonly IPersonnelRepository _IPersonnelRepository;
-
-        public LoginController(IPowerRepository ipowerrepository, IRolePowerRepository irolepowerrepository, IPersonnelRepository ipersonnelrepository)
+        public LoginController(IPersonnelRepository iPersonnelRepository, IPersonnelRoleRepository iPersonnelRoleRepository, IRoleRepository iRoleRepository, IRolePowerRepository iRolePowerRepository, IPowerRepository iPowerRepository)
         {
-            _IPowerRepository = ipowerrepository;
-            _IRolePowerRepository = irolepowerrepository;
-            _IPersonnelRepository = ipersonnelrepository;
+            _IPersonnelRepository = iPersonnelRepository;
+            _IPersonnelRoleRepository = iPersonnelRoleRepository;
+            _IRoleRepository = iRoleRepository;
+            _IRolePowerRepository = iRolePowerRepository;
+            _IPowerRepository = iPowerRepository;
         }
 
         /// <summary>
@@ -74,15 +76,38 @@ namespace House.API.Controllers
         }
 
         /// <summary>
+        /// 权限查询
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<List<Menu>> GetPermissions(int id)
+        {
+            var Users = _IPersonnelRepository.GetAllList();
+            var UserRoles = _IPersonnelRoleRepository.GetAllList();
+            var Roles = _IRoleRepository.GetAllList();
+            var RolePermissions = _IRolePowerRepository.GetAllList();
+            var Permissions = _IPowerRepository.GetAllList();
+            var datalist = (
+                        from a in Users
+                        join b in UserRoles on a.Id equals b.PersonnelId
+                        join c in Roles on b.RoleId equals c.Id
+                        join d in RolePermissions on c.Id equals d.RoleId
+                        join e in Permissions on d.PowerId equals e.Id
+                        where a.Id == id
+                        select e).ToList();
+            List<Menu> data = new List<Menu>();
+            data = await GetMenu(datalist);
+            return data;
+        }
+
+        /// <summary>
         /// 菜单显示
         /// </summary>
         [HttpGet]
-        public async Task<List<Menu>> GetMenu()
+        public async Task<List<Menu>> GetMenu(List<Model.Power> datalist)
         {
-            //到时候只需要更改这样，就可以更改他的权限
-            var data = await _IPowerRepository.GetAllListAsync();
-            //0表示读取省级城市
-            var nodes = data.Where(d => d.SuperiorId == 0).ToList();
+            var nodes = datalist.Where(d => d.SuperiorId == 0).ToList();
             var q = from n in nodes
                     select new Menu()
                     {
@@ -94,7 +119,7 @@ namespace House.API.Controllers
                     };
             List<Menu> list = q.ToList();
 
-            GetSon(list);
+            GetSon(list, datalist);
             return list;
         }
 
@@ -102,12 +127,11 @@ namespace House.API.Controllers
         /// 递归
         /// </summary>
         /// <param name="dtolist"></param>
-        private void GetSon(List<Menu> dtolist)
+        private void GetSon(List<Menu> dtolist, List<Model.Power> datalist)
         {
             foreach (var n in dtolist)
             {
-                var data = _IPowerRepository.GetAllList();
-                var n_1 = data.Where(d => d.SuperiorId == n.Id).ToList();
+                var n_1 = datalist.Where(d => d.SuperiorId == n.Id).ToList();
                 var q_1 = from node in n_1
                           select new Menu()
                           {
@@ -125,7 +149,7 @@ namespace House.API.Controllers
                     n.children.AddRange(list);
                 }
 
-                GetSon(list);
+                GetSon(list, datalist);
             }
         }
 
