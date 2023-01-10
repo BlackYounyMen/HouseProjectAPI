@@ -16,6 +16,6 @@ namespace House.Model
         /// <summary>
         /// 状态
         /// </summary>
-        public string State { get; set; }
+        public bool State { get; set; }
     }
 }

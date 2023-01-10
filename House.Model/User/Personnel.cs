@@ -39,7 +39,7 @@ namespace House.Model
         public string OnlineState { get; set; }
 
         /// <summary>
-        /// 排序
+        /// 头像
         /// </summary>
         public string HandIcon { get; set; }
     }

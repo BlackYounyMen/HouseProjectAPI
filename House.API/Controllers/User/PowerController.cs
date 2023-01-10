@@ -33,14 +33,35 @@ namespace House.API.Controllers.User
         /// <param name="entityBase"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PageModel<Power>> GetData(int pageindex, int pagesize)
+        public async Task<PageModel<Power>> GetData(string name, int pageindex, int pagesize)
         {
-            var data = await _IPowerRepository.GetAllListAsync();
+            var predicate = PredicateBuilder.New<Power>(true);
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                predicate.And(t => t.Name.Contains(name));
+            }
+
+            var data = await _IPowerRepository.GetAllListAsync(predicate);
 
             PageModel<Power> datalist = new PageModel<Power>();
             datalist.PageCount = data.Count();
             datalist.PageSize = Convert.ToInt32(Math.Ceiling((data.Count * 1.0 / pagesize)));
             datalist.Data = data.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+            return datalist;
+        }
+
+        /// <summary>
+        /// 没有分页的数据显示
+        /// </summary>
+        /// <param name="entityBase"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<PageModel<Power>> GetAll()
+        {
+            var data = await _IPowerRepository.GetAllListAsync();
+
+            PageModel<Power> datalist = new PageModel<Power>();
+            datalist.Data = data;
             return datalist;
         }
 

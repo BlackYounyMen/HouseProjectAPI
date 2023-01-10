@@ -11,6 +11,7 @@ using House.Model;
 using House.Dto;
 using System.Linq;
 using System;
+using System.IO;
 
 namespace House.API.Controllers.User
 {
@@ -37,13 +38,18 @@ namespace House.API.Controllers.User
         /// <param name="entityBase"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PageModel<Personnel>> GetData(int pageindex, int pagesize)
+        public async Task<PageModel<Personnel>> GetData(string name, int pageindex, int pagesize)
         {
+            var predicate = PredicateBuilder.New<Personnel>(true);
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                predicate.And(t => t.Name.Contains(name));
+            }
             var data = await _IPersonnelRepository.GetAllListAsync();
 
             PageModel<Personnel> datalist = new PageModel<Personnel>();
             datalist.PageCount = data.Count();
-            datalist.PageSize = Convert.ToInt32(Math.Ceiling((data.Count * 1.0 / pagesize)));
+            datalist.PageSize = Convert.ToInt32(Math.Ceiling((data.Count * 1.0) / pagesize));
             datalist.Data = data.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
             return datalist;
         }
@@ -119,6 +125,25 @@ namespace House.API.Controllers.User
                         Pid = n.PersonnelId,
                     };
             return q.ToList();
+        }
+
+        /// <summary>
+        /// 图片上传
+        /// </summary>
+        /// <param name="jpg"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public string FileLoad(IFormFile jpg)
+        {
+            var postfile = HttpContext.Request.Form.Files[0];
+            var saveUrl = Directory.GetCurrentDirectory() + @"\File\Icon\" + postfile.FileName;
+            using (FileStream fs = new FileStream(saveUrl, FileMode.Create))
+            {
+                postfile.CopyTo(fs);
+                fs.Flush();
+            }
+            string Url = "https://localhost:5001/File/Icon/" + postfile.FileName;
+            return Url;
         }
 
         /// <summary>

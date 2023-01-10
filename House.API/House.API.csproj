@@ -39,4 +39,8 @@
     <ProjectReference Include="..\House.Utils\House.Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="File\Icon\" />
+  </ItemGroup>
+
 </Project>

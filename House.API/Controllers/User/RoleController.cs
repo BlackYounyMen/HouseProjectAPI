@@ -7,6 +7,8 @@ using House.Repository.User;
 using LinqKit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NPOI.HSSF.Record;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,9 +39,14 @@ namespace House.API.Controllers.User
         /// <param name="entityBase"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PageModel<Role>> GetData(int pageindex, int pagesize)
+        public async Task<PageModel<Role>> GetData(string name, int pageindex, int pagesize)
         {
-            var data = await _IRoleRepository.GetAllListAsync();
+            var predicate = PredicateBuilder.New<Role>(true);
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                predicate.And(t => t.RoleName.Contains(name));
+            }
+            var data = await _IRoleRepository.GetAllListAsync(predicate);
 
             PageModel<Role> datalist = new PageModel<Role>();
             datalist.PageCount = data.Count();
@@ -73,6 +80,29 @@ namespace House.API.Controllers.User
             Token<Role> d = new Token<Role>();
             d.Result = await _IRoleRepository.FirstOrDefaultAsync(predicate);
             return d;
+        }
+
+        /// <summary>
+        /// 更改状态值
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<bool> EditState(int id)
+        {
+            var predicate = PredicateBuilder.New<Role>(true);
+            predicate.And(t => t.Id == id);
+            var data = await _IRoleRepository.FirstOrDefaultAsync(predicate);
+            if (data.State == true)
+            {
+                data.State = false;
+            }
+            else
+            {
+                data.State = true;
+            }
+            var state = await _IRoleRepository.UpdateAsync(data);
+            return state;
         }
 
         /// <summary>

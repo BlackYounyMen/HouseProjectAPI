@@ -40,7 +40,7 @@ namespace House.API.Controllers
         /// </summary>
         /// <returns></returns>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         public async Task<Token<Personnel>> UserLogin(string account, string password)
         {
             var predicate = PredicateBuilder.New<Personnel>(true);
