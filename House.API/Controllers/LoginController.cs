@@ -94,7 +94,7 @@ namespace House.API.Controllers
                         join c in Roles on b.RoleId equals c.Id
                         join d in RolePermissions on c.Id equals d.RoleId
                         join e in Permissions on d.PowerId equals e.Id
-                        where a.Id == id
+                        where a.Id == id && c.State == true
                         select e).ToList();
             List<Menu> data = new List<Menu>();
             data = await GetMenu(datalist);

@@ -40,7 +40,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="File\Icon\" />
+    <None Include="wwwroot\File\Icon\0eaf02ae-d34f-4007-b835-8d5b8f80c5bc.png" />
+    <None Include="wwwroot\File\Icon\QQ图片20221224112743.jpg" />
+    <None Include="wwwroot\File\Icon\微信图片_20230110143418.png" />
   </ItemGroup>
 
 </Project>

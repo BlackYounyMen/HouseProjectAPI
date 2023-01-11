@@ -83,6 +83,21 @@ namespace House.API.Controllers.User
         }
 
         /// <summary>
+        /// 没有分页的数据显示
+        /// </summary>
+        /// <param name="entityBase"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<PageModel<Role>> GetAll()
+        {
+            var data = await _IRoleRepository.GetAllListAsync();
+
+            PageModel<Role> datalist = new PageModel<Role>();
+            datalist.Data = data;
+            return datalist;
+        }
+
+        /// <summary>
         /// 更改状态值
         /// </summary>
         /// <param name="id"></param>

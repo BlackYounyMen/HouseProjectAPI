@@ -55,7 +55,7 @@ namespace House.API.Controllers.User
         }
 
         /// <summary>
-        /// 权限数据添加
+        /// 人员数据添加
         /// </summary>
         /// <param name="power"></param>
         /// <returns></returns>
@@ -82,7 +82,7 @@ namespace House.API.Controllers.User
         }
 
         /// <summary>
-        /// 权限数据修改
+        /// 人员数据修改
         /// </summary>
         /// <param name="power"></param>
         /// <returns></returns>
@@ -94,7 +94,7 @@ namespace House.API.Controllers.User
         }
 
         /// <summary>
-        /// 权限数据删除
+        /// 人员数据删除
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -136,7 +136,7 @@ namespace House.API.Controllers.User
         public string FileLoad(IFormFile jpg)
         {
             var postfile = HttpContext.Request.Form.Files[0];
-            var saveUrl = Directory.GetCurrentDirectory() + @"\File\Icon\" + postfile.FileName;
+            var saveUrl = Directory.GetCurrentDirectory() + @"\wwwroot\File\Icon\" + postfile.FileName;
             using (FileStream fs = new FileStream(saveUrl, FileMode.Create))
             {
                 postfile.CopyTo(fs);
@@ -152,10 +152,10 @@ namespace House.API.Controllers.User
         /// <param name="rid"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<bool> RPDelete(List<PersonnelRole> data)
+        public async Task<bool> PRDelete(List<PersonnelRole> data)
         {
             var predicate = PredicateBuilder.New<PersonnelRole>(true);
-            predicate.And(t => t.RoleId == data[0].RoleId);
+            predicate.And(t => t.PersonnelId == data[0].PersonnelId);
             await _IPersonnelRoleRepository.DeleteAsync(predicate);
             foreach (var item in data)
             {
