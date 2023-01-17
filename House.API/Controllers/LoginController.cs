@@ -64,21 +64,9 @@ namespace House.API.Controllers
         }
 
         /// <summary>
-        /// 人员查询
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public List<RolePower> GetAll()
-        {
-            List<RolePower> data = new List<RolePower>();
-            data = _IRolePowerRepository.GetAllList();
-            return data;
-        }
-
-        /// <summary>
         /// 权限查询
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id"></param>e
         /// <returns></returns>
         [HttpGet]
         public async Task<List<Menu>> GetPermissions(int id)
