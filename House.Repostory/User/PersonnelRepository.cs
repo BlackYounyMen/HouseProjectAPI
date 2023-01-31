@@ -12,7 +12,7 @@ namespace House.Repository.User
 {
     public class PersonnelRepository : BaseService<Personnel>, IPersonnelRepository
     {
-        public PersonnelRepository(MyDbConText db) : base(db)
+        public PersonnelRepository(MyDbConText db) : base(db)   
         {
         }
     }
