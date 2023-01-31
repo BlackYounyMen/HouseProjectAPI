@@ -7,7 +7,7 @@ namespace House.Model
     /// <summary>
     /// 公共基类
     /// </summary>
-    public class EntityBase
+    public class EntityBase 
     {
         /// <summary>
         /// 主键Id

@@ -5,15 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace House.Model
+namespace House.Model.DeviceManagement
 {
     /// <summary>
-    /// 楼层表
+    /// 风机设备表
     /// </summary>
-    public class Floor : EntityBase
+    public class Fan : EntityBase
     {
         
+        public int Building { get; set; }
         public int UnitNum { get; set; }
         public int FloorNum { get; set; }
+        public int FanState { get; set; }
     }
 }

@@ -10,10 +10,9 @@ namespace House.Model
     /// <summary>
     /// 异常日志表
     /// </summary>
-    public class Exceptionlog
+    public class Exceptionlog : EntityBase
     {
-        [Key]
-        public int Id { get; set; }
+       
         public string Account { get; set; }
         public DateTime HappenTime { get; set; }
         public string DescribeContent { get; set; }

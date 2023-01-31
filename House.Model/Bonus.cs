@@ -10,10 +10,9 @@ namespace House.Model
     /// <summary>
     /// 奖金表
     /// </summary>
-    public class Bonus
+    public class Bonus : EntityBase
     {
-        [Key]
-        public int Id { get; set; }
+      
         public string ProjectId { get; set; }
         public decimal BonusRatio { get; set; }
         

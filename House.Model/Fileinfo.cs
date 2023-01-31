@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 namespace House.Model
 {
     /// <summary>
-    /// 文件信息表
+    /// 附件表
     /// </summary>
-    public class Fileinfo
+    public class Fileinfo : EntityBase
     {
-        [Key]
-        public int Id { get; set; }
+   
         public string Cus_Id { get; set; }
         public string FileName { get; set; }
         public DateTime UploadTime { get; set; }

@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace House.Model
+namespace House.Model.PerformanceManagement
 {
     /// <summary>
-    /// 楼层表
+    /// 考核任务与项目关联表
     /// </summary>
-    public class Floor : EntityBase
+    public class Appraisalrelation : EntityBase
     {
         
-        public int UnitNum { get; set; }
-        public int FloorNum { get; set; }
+        public int AssessId { get; set; }
+        public int ProjectID { get; set; }
     }
 }

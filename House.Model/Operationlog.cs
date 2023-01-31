@@ -10,10 +10,9 @@ namespace House.Model
     /// <summary>
     /// 操作日志表
     /// </summary>
-    public class Operationlog
+    public class Operationlog : EntityBase
     {
-        [Key]
-        public int Id { get; set; }
+        
         public string Account { get; set; }
         public DateTime OperationTime { get; set; }
         public string Execute { get; set; }

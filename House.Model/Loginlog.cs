@@ -10,10 +10,9 @@ namespace House.Model
     /// <summary>
     /// 登录日志表
     /// </summary>
-    public class Loginlog
+    public class Loginlog : EntityBase
     {
-        [Key]
-        public int Id { get; set; }
+        
         public string User { get; set; }
         public DateTime LoginTime { get; set; }
         public string PCIP { get; set; }

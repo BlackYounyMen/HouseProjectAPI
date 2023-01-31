@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace House.Model
+namespace House.Model.SystemSettings
 {
     /// <summary>
-    /// 楼层表
+    /// 奖金分配表
     /// </summary>
-    public class Floor : EntityBase
+    public class Partitioncoefficient : EntityBase
     {
         
-        public int UnitNum { get; set; }
-        public int FloorNum { get; set; }
+        public string ItemName { get; set; }
+        public decimal Proportion { get; set; }
     }
 }

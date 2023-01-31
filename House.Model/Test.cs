@@ -2,10 +2,9 @@
 
 namespace House.Model
 {
-    public class Test
+    public class Test : EntityBase
     {
-        [Key]
-        public int Id { get; set; }
+        
 
         public string Name { get; set; }
 

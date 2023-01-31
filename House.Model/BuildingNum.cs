@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 namespace House.Model
 {
     /// <summary>
-    /// 建筑编号表
+    /// 楼号表
     /// </summary>
-    public class BuildingNum
+    public class BuildingNum : EntityBase
     {
-        [Key]
-        public int Id { get; set; }
+       
         public int Building { get; set; }
     }
 }

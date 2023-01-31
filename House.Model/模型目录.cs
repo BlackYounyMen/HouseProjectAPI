@@ -24,5 +24,16 @@
         // Permission 权限表
 
         #endregion User文件夹
+
+        #region model中文件夹的含义
+        //ContractManagement 合同管理
+        //CustomerManagement 客户管理
+        //DeviceManagement 设备管理
+        //OperationsManagement 运营管理
+        //PerformanceManagement 绩效管理
+        //SystemSettings 系统设置
+        //TimeAndAttendanceManagement 考勤管理
+        //User rbac,基于权限控制
+        #endregion
     }
 }

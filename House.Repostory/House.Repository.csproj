@@ -15,8 +15,4 @@
     <ProjectReference Include="..\House.IRepostory\House.IRepository.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Customermanagement\" />
-  </ItemGroup>
-
 </Project>
