@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Customermanagement\**" />
+    <EmbeddedResource Remove="Customermanagement\**" />
+    <None Remove="Customermanagement\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.17" />
     <PackageReference Include="SqlSugarCore" Version="5.1.3.42" />
   </ItemGroup>
