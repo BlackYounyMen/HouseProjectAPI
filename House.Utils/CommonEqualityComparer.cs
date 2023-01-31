@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace House.Cache
+namespace House.Utils
 {
     public static class DistinctExtensions
     {
