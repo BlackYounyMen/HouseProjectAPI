@@ -49,35 +49,36 @@ namespace House.API.Controllers.CustomerManagement
         public async Task<CustomerListDtoState> GetState()
         {
             CustomerListDtoState d = new CustomerListDtoState();
+            d.Select = true;
             d.Id = true;
             d.Number = true;
             d.CustomerName = true;
             d.CompanyAddress = true;
             d.Contacts = true;
-            d.Telephone = true;
-            d.BankAccount = true;
-            d.BankName = true;
-            d.EnterpriseCode = true;
-            d.CustomerType = true;
-            d.Industry = true;
-            d.CreditRating = true;
-            d.Representative = true;
-            d.TaxpayerNum = true;
-            d.Cus_Id = true;
-            d.DustomerId = true;
-            d.Name = true;
-            d.Post = true;
-            d.Phone = true;
-            d.Dep = true;
-            d.Email = true;
-            d.EntryTime = true;
-            d.FileName = true;
-            d.UploadTime = true;
-            d.FileSize = true;
-            d.FileType = true;
-            d.Enteredby = true;
-            d.Url = true;
-            d.FIleCategroy = true;
+            d.Telephone = false;
+            d.BankAccount = false;
+            d.BankName = false;
+            d.EnterpriseCode = false;
+            d.CustomerType = false;
+            d.Industry = false;
+            d.CreditRating = false;
+            d.Representative = false;
+            d.TaxpayerNum = false;
+            d.Cus_Id = false;
+            d.DustomerId = false;
+            d.Name = false;
+            d.Post = false;
+            d.Phone = false;
+            d.Dep = false;
+            d.Email = false;
+            d.EntryTime = false;
+            d.FileName = false;
+            d.UploadTime = false;
+            d.FileSize = false;
+            d.FileType = false;
+            d.Enteredby = false;
+            d.Url = false;
+            d.FIleCategroy = false;
             return d;
         }
 
@@ -137,9 +138,15 @@ namespace House.API.Controllers.CustomerManagement
         /// <param name="pagesize"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<List<CustomerListDto>> GetData(string name, int pageindex, int pagesize)
+        public async Task<PageModel<CustomerListDto>> GetData(string name, int pageindex, int pagesize)
         {
-            return await GetDataitem();
+            var customerlistdto =  await GetDataitem();
+            PageModel<CustomerListDto> customerlistdtoitem = new PageModel<CustomerListDto>();
+            customerlistdtoitem.PageCount = customerlistdto.Count();
+            customerlistdtoitem.PageSize = Convert.ToInt32(Math.Ceiling((customerlistdto.Count * 1.0) / pagesize));
+            customerlistdtoitem.Data = customerlistdto.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+            return customerlistdtoitem;
+            
         }
 
         /// <summary>
@@ -188,7 +195,7 @@ namespace House.API.Controllers.CustomerManagement
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<List<CustomerListDto>> GetDataitem()
+        public async Task<List<CustomerListDto>> GetDataitem( )
         {
             var data1 = await _IPersonchargeRepository.GetAllListAsync();
             var data2 = await _IFileinfoRepository.GetAllListAsync();
@@ -266,7 +273,10 @@ namespace House.API.Controllers.CustomerManagement
                 d.FIleCategroy = item.FIleCategroy;
                 customerlistdto.Add(d);
             }
+
             return customerlistdto;
+
+
         }
 
         /// <summary>
@@ -282,37 +292,38 @@ namespace House.API.Controllers.CustomerManagement
             //设置表单列的宽度
             sheet.DefaultColumnWidth = 20;
 
+            ///先改这里 这里先给我把字段写上 ok？嗯
             //新建标题行
             HSSFRow dataRow = (HSSFRow)sheet.CreateRow(0);
-            dataRow.CreateCell(0).SetCellValue("厂牌型号");
-            dataRow.CreateCell(1).SetCellValue("车牌号");
-            dataRow.CreateCell(2).SetCellValue("司机姓名");
-            dataRow.CreateCell(3).SetCellValue("所属公司");
-            dataRow.CreateCell(4).SetCellValue("车型长");
-            dataRow.CreateCell(5).SetCellValue("车型宽");
-            dataRow.CreateCell(6).SetCellValue("车型高");
-            dataRow.CreateCell(7).SetCellValue("车身颜色");
-            dataRow.CreateCell(8).SetCellValue("购买日期");
-            dataRow.CreateCell(9).SetCellValue("运营证号");
-            dataRow.CreateCell(10).SetCellValue("保险到期时间");
-            dataRow.CreateCell(11).SetCellValue("年检到期时间");
-            dataRow.CreateCell(12).SetCellValue("保养公里设置");
-            dataRow.CreateCell(13).SetCellValue("厂牌型号");
-            dataRow.CreateCell(14).SetCellValue("车牌号");
-            dataRow.CreateCell(15).SetCellValue("司机姓名");
-            dataRow.CreateCell(16).SetCellValue("所属公司");
-            dataRow.CreateCell(17).SetCellValue("车型长");
-            dataRow.CreateCell(18).SetCellValue("车型宽");
-            dataRow.CreateCell(19).SetCellValue("车型高");
-            dataRow.CreateCell(20).SetCellValue("车身颜色");
-            dataRow.CreateCell(21).SetCellValue("购买日期");
-            dataRow.CreateCell(22).SetCellValue("运营证号");
-            dataRow.CreateCell(23).SetCellValue("保险到期时间");
-            dataRow.CreateCell(24).SetCellValue("年检到期时间");
-            dataRow.CreateCell(25).SetCellValue("保养公里设置");
-            dataRow.CreateCell(26).SetCellValue("年检到期时间");
-            dataRow.CreateCell(27).SetCellValue("保养公里设置");
-            dataRow.CreateCell(28).SetCellValue("保养公里设置");
+            dataRow.CreateCell(0).SetCellValue("ID");
+            dataRow.CreateCell(1).SetCellValue("编号");
+            dataRow.CreateCell(2).SetCellValue("客户名称");
+            dataRow.CreateCell(3).SetCellValue("公司地址");
+            dataRow.CreateCell(4).SetCellValue("联系人");
+            dataRow.CreateCell(5).SetCellValue("电话号码");
+            dataRow.CreateCell(6).SetCellValue("开户银行账号");
+            dataRow.CreateCell(7).SetCellValue("开户银行名称");
+            dataRow.CreateCell(8).SetCellValue("企业代码");
+            dataRow.CreateCell(9).SetCellValue("客户类型");
+            dataRow.CreateCell(10).SetCellValue("所属行业");
+            dataRow.CreateCell(11).SetCellValue("信用级别");
+            dataRow.CreateCell(12).SetCellValue("法定代表");
+            dataRow.CreateCell(13).SetCellValue("纳税人识别号");
+            dataRow.CreateCell(14).SetCellValue("客户信_Id");
+            dataRow.CreateCell(15).SetCellValue("客户Id");
+            dataRow.CreateCell(16).SetCellValue("姓名");
+            dataRow.CreateCell(17).SetCellValue("职务");
+            dataRow.CreateCell(18).SetCellValue("电话");
+            dataRow.CreateCell(19).SetCellValue("部门");
+            dataRow.CreateCell(20).SetCellValue("邮箱");
+            dataRow.CreateCell(21).SetCellValue("录入时间");
+            dataRow.CreateCell(22).SetCellValue("文件名");
+            dataRow.CreateCell(23).SetCellValue("上传时间");
+            dataRow.CreateCell(24).SetCellValue("文件大小");
+            dataRow.CreateCell(25).SetCellValue("文件类型");
+            dataRow.CreateCell(26).SetCellValue("录入人");
+            dataRow.CreateCell(27).SetCellValue("附件路径");
+            dataRow.CreateCell(28).SetCellValue("附件类别");
             var row = 1;
             var data = await GetDataitem();
             data.ForEach(m =>
