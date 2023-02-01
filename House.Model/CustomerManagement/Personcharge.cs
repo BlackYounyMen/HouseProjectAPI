@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace House.Model.CustomerManagement
 {
     /// <summary>
-    /// 收费表
+    /// 负责人表
     /// </summary>
     public class Personcharge : EntityBase
     {

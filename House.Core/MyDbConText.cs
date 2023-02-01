@@ -1,4 +1,5 @@
 ﻿using House.Model;
+using House.Model.CustomerManagement;
 using Microsoft.EntityFrameworkCore;
 
 namespace House.Core
@@ -46,5 +47,26 @@ namespace House.Core
         public virtual DbSet<WaterMeter> WaterMeter { get; set; }
 
         #endregion
+
+        #region 客户管理
+        /// <summary>
+        /// 客户信息表
+        /// </summary>
+        
+        public virtual DbSet<Customerinfo> Customerinfo { get; set; }
+        /// <summary>
+        /// 负责人
+        /// </summary>
+        public virtual DbSet<Personcharge> Personcharge { get; set; }
+        /// <summary>
+        /// 连接表
+        /// </summary>
+        public virtual DbSet<CustomerItem> CustomerItem { get; set; }
+
+        #endregion
+        /// <summary>
+        /// 附件表
+        /// </summary>
+        public virtual DbSet<Fileinfo> Fileinfo { get; set; }
     }
 }

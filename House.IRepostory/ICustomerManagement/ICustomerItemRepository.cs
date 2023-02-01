@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace House.IRepository.CustomerManagement
+namespace House.IRepository.ICustomerManagement
 {
-    public interface ICustomerinfoRepository:IBaseService<Customerinfo>
+    public  interface ICustomerItemRepository:IBaseService<CustomerItem>
     {
-        
     }
 }

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace House.IRepository.CustomerManagement
+namespace House.IRepository.ICustomerManagement
 {
-    public interface IPersonchargeRepository:IBaseService<Personcharge>
+    public interface ICustomerinfoRepository : IBaseService<Customerinfo>
     {
 
     }
