@@ -98,6 +98,7 @@ namespace House.API.Controllers.CustomerManagement
                 List<int> jid = new List<int>();
                 foreach (var item in customerdto.personcharge)
                 {
+                    item.DustomerId = cid.ToString();
                     await _IPersonchargeRepository.InsertAsync(item);
                     jid.Add(item.Id);
 

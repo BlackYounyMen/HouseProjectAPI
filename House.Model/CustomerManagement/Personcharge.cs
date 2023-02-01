@@ -20,6 +20,6 @@ namespace House.Model.CustomerManagement
         public string Phone { get; set; }
         public string Dep { get; set; }
         public string Email { get; set; }
-        public DateTime EntryTime { get; set; }
+        public DateTime EntryTime { get; set; } = DateTime.Now;
     }
 }
