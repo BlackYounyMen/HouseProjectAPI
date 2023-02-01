@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace House.IRepository.DeviceManagement
 {
-    public interface IElectricmeterRepository:IBaseService<Electricmeter>
+    public interface IElectricmeterRepository : IBaseService<Electricmeter>
     {
+        void Add();
     }
 }
