@@ -21,6 +21,7 @@ namespace House.API.Controllers
     public class DictionariesController : ControllerBase
     {
         private readonly IDictionariesRepository _IDictionariesRepository;
+
         public DictionariesController(IDictionariesRepository _DictionariesRepository)
         {
             _IDictionariesRepository = _DictionariesRepository;
@@ -56,7 +57,6 @@ namespace House.API.Controllers
         [HttpGet]
         public async Task<PageModel<Dictionaries>> GetAllSelect()
         {
-        
             var data = await _IDictionariesRepository.GetAllListAsync();
             PageModel<Dictionaries> Dictionaries = new PageModel<Dictionaries>();
 
@@ -130,6 +130,7 @@ namespace House.API.Controllers
             try
             {
                 var predicate = PredicateBuilder.New<Dictionaries>(true);
+                predicate.And(t => t.Id == id);
                 return await _IDictionariesRepository.DeleteAsync(predicate);
             }
             catch (Exception)
@@ -139,5 +140,4 @@ namespace House.API.Controllers
             }
         }
     }
-
 }

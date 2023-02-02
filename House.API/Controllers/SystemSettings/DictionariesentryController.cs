@@ -120,6 +120,7 @@ namespace House.API.Controllers.SystemSettings
             try
             {
                 var predicate = PredicateBuilder.New<Dictionariesentry>(true);
+                predicate.And(t => t.Id == id);
                 return await _IDictionariesentryRepository.DeleteAsync(predicate);
             }
             catch (Exception)
