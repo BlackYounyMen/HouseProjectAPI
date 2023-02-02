@@ -73,6 +73,8 @@ namespace House.API.Controllers.SystemSettings
         {
             try
             {
+                var coding = NPinyin.Pinyin.GetPinyin(dictionariesentry.Coding);
+                dictionariesentry.Coding = coding.Replace(" ", "");
                 return await _IDictionariesentryRepository.InsertAsync(dictionariesentry);
             }
             catch (Exception)
