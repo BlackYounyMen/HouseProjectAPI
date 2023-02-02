@@ -150,7 +150,6 @@ namespace House.API.Controllers.CustomerManagement
             customerlistdtoitem.PageSize = Convert.ToInt32(Math.Ceiling((customerlistdto.Count * 1.0) / pagesize));
             customerlistdtoitem.Data = customerlistdto.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
             return customerlistdtoitem;
-
         }
 
         /// <summary>
@@ -279,8 +278,6 @@ namespace House.API.Controllers.CustomerManagement
             }
 
             return customerlistdto;
-
-
         }
 
         /// <summary>

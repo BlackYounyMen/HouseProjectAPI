@@ -13,9 +13,8 @@ namespace House.Model.ContractManagement
     /// </summary>
     public class ContractInfo : EntityBase
     {
-       
-        public string Cus_Id { get; set; }
         public string ContractId { get; set; }
+
         public string ContractNum { get; set; }
         public string ContractName { get; set; }
         public string ConstructionUnit { get; set; }
@@ -28,6 +27,5 @@ namespace House.Model.ContractManagement
         public decimal ActualAmount { get; set; }
         public DateTime SigningDate { get; set; }
         public string CustomerId { get; set; }
-
     }
 }

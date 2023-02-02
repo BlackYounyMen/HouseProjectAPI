@@ -1,5 +1,4 @@
-﻿
-using House.Model;
+﻿using House.Model;
 using House.Model.CustomerManagement;
 using System;
 using System.Collections.Generic;
@@ -20,6 +19,7 @@ namespace House.Dto
         /// 负责人
         /// </summary>
         public List<Personcharge> personcharge { get; set; }
+
         /// <summary>
         /// 附件表
         /// </summary>

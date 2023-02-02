@@ -1,4 +1,5 @@
 ﻿using House.Model;
+using House.Model.ContractManagement;
 using House.Model.CustomerManagement;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,21 +50,45 @@ namespace House.Core
         #endregion
 
         #region 客户管理
+
         /// <summary>
         /// 客户信息表
         /// </summary>
-        
+
         public virtual DbSet<Customerinfo> Customerinfo { get; set; }
+
         /// <summary>
         /// 负责人
         /// </summary>
         public virtual DbSet<Personcharge> Personcharge { get; set; }
+
         /// <summary>
         /// 连接表
         /// </summary>
         public virtual DbSet<CustomerItem> CustomerItem { get; set; }
 
         #endregion
+
+        #region 合同管理
+
+        /// <summary>
+        /// 合同费用表
+        /// </summary>
+
+        public virtual DbSet<ContractCharges> ContractCharges { get; set; }
+        /// <summary>
+        /// 合同信息表
+        /// </summary>
+
+        public virtual DbSet<ContractInfo> ContractInfo { get; set; }
+        /// <summary>
+        /// 合同签约信息表
+        /// </summary>
+
+        public virtual DbSet<Subscriptioninfo> Subscriptioninfo { get; set; }
+
+        #endregion
+
         /// <summary>
         /// 附件表
         /// </summary>
