@@ -12,7 +12,6 @@ namespace House.Model.SystemSettings
     /// </summary>
     public class Dictionariesentry : EntityBase
     {
-        
         public string Coding { get; set; }
         public string ItemCode { get; set; }
         public string ItemName { get; set; }
