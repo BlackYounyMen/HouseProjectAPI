@@ -206,8 +206,9 @@ namespace House.API.Controllers.CustomerManagement
             var data = await _ICustomerinfoRepository.GetAllListAsync();
             List<CustomerListDto> customerlistdto = new List<CustomerListDto>();
 
+
             var list = from a in data1
-                       join b in data3 on a.Id equals b.fid
+                       join b in data3 on a.Id equals b.jid
                        join c in data on b.cid equals c.Id
                        join d in data2 on b.fid equals d.Id
                        select new

@@ -5,6 +5,7 @@ using House.IRepository.SystemSettings;
 using House.IRepository.User;
 using House.Model;
 using House.Model.SystemSettings;
+using House.Repository.DeviceManagement;
 using LinqKit;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.SS.Formula.Functions;
@@ -13,11 +14,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace House.API.Controllers
+namespace House.API.Controllers.SystemSettings
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [ApiExplorerSettings(GroupName = "Dictionaries")]
+    [ApiExplorerSettings(GroupName = "Dice")]
     public class DictionariesController : ControllerBase
     {
         private readonly IDictionariesRepository _IDictionariesRepository;
@@ -35,14 +36,17 @@ namespace House.API.Controllers
         /// <param name="pagesize"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PageModel<Dictionaries>> GetAll(int id, int pageindex, int pagesize)
+        public async Task<PageModel<Dictionaries>> GetAll(string name  , int pageindex, int pagesize)
         {
             var predicate = PredicateBuilder.New<Dictionaries>(true);
-            predicate.And(t => t.Id == id);
+            if (!string.IsNullOrEmpty(name))
+            {
+                predicate.And(t => t.Name.Contains(name));
+            }
             var data = await _IDictionariesRepository.GetAllListAsync(predicate);
             PageModel<Dictionaries> Dictionaries = new PageModel<Dictionaries>();
             Dictionaries.PageCount = data.Count();
-            Dictionaries.PageSize = Convert.ToInt32(Math.Ceiling((data.Count * 1.0) / pagesize));
+            Dictionaries.PageSize = Convert.ToInt32(Math.Ceiling(data.Count * 1.0 / pagesize));
             Dictionaries.Data = data.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
             return Dictionaries;
         }
@@ -91,6 +95,9 @@ namespace House.API.Controllers
         {
             try
             {
+                var coding = NPinyin.Pinyin.GetPinyin(Dictionaries.Name);
+                Dictionaries.Coding = coding.Replace(" ", "");
+
                 return await _IDictionariesRepository.InsertAsync(Dictionaries);
             }
             catch (Exception)
@@ -110,6 +117,9 @@ namespace House.API.Controllers
         {
             try
             {
+
+                var coding = NPinyin.Pinyin.GetPinyin(Dictionaries.Name);
+                Dictionaries.Coding = coding.Replace(" ", "");
                 return await _IDictionariesRepository.UpdateAsync(Dictionaries);
             }
             catch (Exception)
@@ -137,6 +147,29 @@ namespace House.API.Controllers
             {
                 return false;
                 throw;
+            }
+        }
+
+        /// <summary>
+        /// 修改状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<bool> EditState(int id)
+        {
+            var predicate = PredicateBuilder.New<Dictionaries>(true);
+            predicate.And(t => t.Id == id);
+            var data = await _IDictionariesRepository.FirstOrDefaultAsync(predicate);
+            if (data.State == true)
+            {
+                data.State = false;
+                return await _IDictionariesRepository.UpdateAsync(data);
+            }
+            else
+            {
+                data.State = true;
+                return await _IDictionariesRepository.UpdateAsync(data);
             }
         }
     }

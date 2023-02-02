@@ -96,6 +96,7 @@ namespace House.Core
         /// 字典项表
         /// </summary>
         public virtual DbSet<Dictionariesentry> Dictionariesentry { get; set; }
+        public virtual DbSet<Dictionaries> Dictionaries { get; set; }
 
         #endregion
 
