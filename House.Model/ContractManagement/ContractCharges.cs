@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace House.Model.ContractManagement
 {
     /// <summary>
-    /// 合同费用表
+    /// 合同收费表
     /// </summary>
     public class ContractCharges : EntityBase
     {

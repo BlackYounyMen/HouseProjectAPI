@@ -3,6 +3,7 @@ using House.IRepository;
 using House.IRepository.ICustomerManagement;
 using House.Model;
 using House.Model.CustomerManagement;
+using House.Repository;
 using House.Repository.Customer;
 using LinqKit;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using NPOI.HPSF;
 using NPOI.HSSF.UserModel;
+using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Metadata.Edm;
@@ -41,6 +43,8 @@ namespace House.API.Controllers.CustomerManagement
             _ICustomerItemRepository = _icustomerItemRepository;
         }
 
+        #region 客户信息
+      
         /// <summary>
         /// 页面数据的显示切换
         /// </summary>
@@ -140,13 +144,13 @@ namespace House.API.Controllers.CustomerManagement
         [HttpGet]
         public async Task<PageModel<CustomerListDto>> GetData(string name, int pageindex, int pagesize)
         {
-            var customerlistdto =  await GetDataitem();
+            var customerlistdto = await GetDataitem();
             PageModel<CustomerListDto> customerlistdtoitem = new PageModel<CustomerListDto>();
             customerlistdtoitem.PageCount = customerlistdto.Count();
             customerlistdtoitem.PageSize = Convert.ToInt32(Math.Ceiling((customerlistdto.Count * 1.0) / pagesize));
             customerlistdtoitem.Data = customerlistdto.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
             return customerlistdtoitem;
-            
+
         }
 
         /// <summary>
@@ -195,7 +199,7 @@ namespace House.API.Controllers.CustomerManagement
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<List<CustomerListDto>> GetDataitem( )
+        public async Task<List<CustomerListDto>> GetDataitem()
         {
             var data1 = await _IPersonchargeRepository.GetAllListAsync();
             var data2 = await _IFileinfoRepository.GetAllListAsync();
@@ -368,7 +372,7 @@ namespace House.API.Controllers.CustomerManagement
             workbook.Write(fs);
 
             byte[] b = fs.ToArray();
-            return File(b, System.Net.Mime.MediaTypeNames.Application.Octet, "车辆数据.xls"); //关键语句
+            return File(b, System.Net.Mime.MediaTypeNames.Application.Octet, "客户信息数据.xls"); //关键语句
         }
 
         /// <summary>
@@ -406,5 +410,143 @@ namespace House.API.Controllers.CustomerManagement
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// 客户数据页面加载
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="pageindex"></param>
+        /// <param name="pagesize"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<CustomerDto> CustomerRecoil( int id ) 
+        {
+            var data1 = await _IPersonchargeRepository.GetAllListAsync();
+            var data2 = await _IFileinfoRepository.GetAllListAsync();
+            var data3 = await _ICustomerItemRepository.GetAllListAsync();
+            var data = await _ICustomerinfoRepository.GetAllListAsync();
+            var fileitem =(
+                        from a in data2
+                        join b in data3 on a.Id equals b.fid
+                        join c in data1 on b.jid equals c.Id                     
+                        where c.Id == id
+                        select a).FirstOrDefault();
+
+            var customeritem = (
+                        from a in data
+                        join b in data3 on a.Id equals b.cid
+                        join c in data1 on b.jid equals c.Id
+                        where c.Id == id
+                        select a).FirstOrDefault();
+
+
+
+            CustomerDto d = new CustomerDto();
+            d.personcharge = data1.Where(t => t.Id == id).ToList();
+            d.fileinfo = fileitem;
+            d.customerinfo = customeritem;
+            return d;
+
+
+        }
+
+        #endregion
+
+
+        #region 联系人
+        /// <summary>
+        /// 数据显示
+        /// </summary>
+        /// <param name="entityBase"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<PageModel<Personcharge>> GetPerson(string name, int pageindex, int pagesize)
+        {
+            var predicate = PredicateBuilder.New<Personcharge>(true);
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                predicate.And(t => t.Name.Contains(name));
+            }
+            var data = await _IPersonchargeRepository.GetAllListAsync(predicate);
+
+            PageModel<Personcharge> datalist = new PageModel<Personcharge>();
+            datalist.PageCount = data.Count();
+            datalist.PageSize = Convert.ToInt32(Math.Ceiling((data.Count * 1.0 / pagesize)));
+            datalist.Data = data.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+            return datalist;
+        }
+
+        /// <summary>
+        /// 导出数据到Excel中
+        /// </summary>
+        [HttpGet]
+        public async Task<FileResult> PersonNpoiExportExcel()
+        {
+            //定义工作簿
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            //创建Sheet表单
+            HSSFSheet sheet = (HSSFSheet)workbook.CreateSheet("联系人信息");
+            //设置表单列的宽度
+            sheet.DefaultColumnWidth = 20;
+
+            ///先改这里 这里先给我把字段写上 ok？嗯
+            //新建标题行
+            HSSFRow dataRow = (HSSFRow)sheet.CreateRow(0);
+            dataRow.CreateCell(0).SetCellValue("ID");
+        
+            dataRow.CreateCell(1).SetCellValue("客户信_Id");
+            dataRow.CreateCell(2).SetCellValue("客户Id");
+            dataRow.CreateCell(3).SetCellValue("姓名");
+            dataRow.CreateCell(4).SetCellValue("职务");
+            dataRow.CreateCell(5).SetCellValue("电话");
+            dataRow.CreateCell(6).SetCellValue("部门");
+            dataRow.CreateCell(7).SetCellValue("邮箱");
+            dataRow.CreateCell(8).SetCellValue("录入时间");
+         
+            var row = 1;
+            var data = await _IPersonchargeRepository.GetAllListAsync();
+            data.ForEach(m =>
+            {
+                dataRow = (HSSFRow)sheet.CreateRow(row);//新建数据行
+
+                dataRow.CreateCell(0).SetCellValue(m.Id);
+
+                dataRow.CreateCell(1).SetCellValue(m.Cus_Id);
+                dataRow.CreateCell(2).SetCellValue(m.DustomerId);
+                dataRow.CreateCell(3).SetCellValue(m.Name);
+                dataRow.CreateCell(4).SetCellValue(m.Post);
+                dataRow.CreateCell(5).SetCellValue(m.Phone);
+                dataRow.CreateCell(6).SetCellValue(m.Dep);
+                dataRow.CreateCell(7).SetCellValue(m.Email);
+                dataRow.CreateCell(8).SetCellValue(m.EntryTime.ToString());
+              
+
+                row++;
+            });
+
+            var fs = new MemoryStream();
+
+            workbook.Write(fs);
+
+            byte[] b = fs.ToArray();
+            return File(b, System.Net.Mime.MediaTypeNames.Application.Octet, "联系人数据.xls"); //关键语句
+        }
+        /// <summary>
+        /// 联系人查看
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<Personcharge> PerSonRecoil( int id ) 
+        {
+            var predicate = PredicateBuilder.New<Personcharge>(true); // where 1=1
+            predicate.And(t => t.Id == id);  // and
+            var data = await _IPersonchargeRepository.FirstOrDefaultAsync(predicate);
+            return data;
+        }
+        #endregion
+
+
+
     }
 }
