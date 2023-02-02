@@ -140,13 +140,12 @@ namespace House.API.Controllers.CustomerManagement
         [HttpGet]
         public async Task<PageModel<CustomerListDto>> GetData(string name, int pageindex, int pagesize)
         {
-            var customerlistdto =  await GetDataitem();
+            var customerlistdto = await GetDataitem();
             PageModel<CustomerListDto> customerlistdtoitem = new PageModel<CustomerListDto>();
             customerlistdtoitem.PageCount = customerlistdto.Count();
             customerlistdtoitem.PageSize = Convert.ToInt32(Math.Ceiling((customerlistdto.Count * 1.0) / pagesize));
             customerlistdtoitem.Data = customerlistdto.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
             return customerlistdtoitem;
-            
         }
 
         /// <summary>
@@ -195,7 +194,7 @@ namespace House.API.Controllers.CustomerManagement
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<List<CustomerListDto>> GetDataitem( )
+        public async Task<List<CustomerListDto>> GetDataitem()
         {
             var data1 = await _IPersonchargeRepository.GetAllListAsync();
             var data2 = await _IFileinfoRepository.GetAllListAsync();
@@ -275,8 +274,6 @@ namespace House.API.Controllers.CustomerManagement
             }
 
             return customerlistdto;
-
-
         }
 
         /// <summary>
