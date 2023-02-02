@@ -17,5 +17,6 @@ namespace House.Model.SystemSettings
         public string ItemName { get; set; }
         public int OrderId { get; set; }
         public bool State { get; set; }
+        public int Pid { get; set; }
     }
 }

@@ -34,10 +34,14 @@ namespace House.API.Controllers.SystemSettings
         /// <param name="pagesize"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PageModel<Dictionariesentry>> GetAll(int id, int pageindex, int pagesize)
+        public async Task<PageModel<Dictionariesentry>> GetAll(int id, string itemname, int pageindex, int pagesize)
         {
             var predicate = PredicateBuilder.New<Dictionariesentry>(true);
-            predicate.And(t => t.Id == id);
+            predicate.And(t => t.Pid == id);
+            if (!string.IsNullOrEmpty(itemname))
+            {
+                predicate.And(t => t.ItemName.Contains(itemname));
+            }
             var data = await _IDictionariesentryRepository.GetAllListAsync(predicate);
             PageModel<Dictionariesentry> dictionariesentry = new PageModel<Dictionariesentry>();
             dictionariesentry.PageCount = data.Count();
@@ -73,7 +77,7 @@ namespace House.API.Controllers.SystemSettings
         {
             try
             {
-                var coding = NPinyin.Pinyin.GetPinyin(dictionariesentry.Coding);
+                var coding = NPinyin.Pinyin.GetPinyin(dictionariesentry.ItemName);
                 dictionariesentry.Coding = coding.Replace(" ", "");
                 return await _IDictionariesentryRepository.InsertAsync(dictionariesentry);
             }
@@ -94,6 +98,8 @@ namespace House.API.Controllers.SystemSettings
         {
             try
             {
+                var coding = NPinyin.Pinyin.GetPinyin(dictionariesentry.ItemName);
+                dictionariesentry.Coding = coding.Replace(" ", "");
                 return await _IDictionariesentryRepository.UpdateAsync(dictionariesentry);
             }
             catch (Exception)
@@ -115,6 +121,36 @@ namespace House.API.Controllers.SystemSettings
             {
                 var predicate = PredicateBuilder.New<Dictionariesentry>(true);
                 return await _IDictionariesentryRepository.DeleteAsync(predicate);
+            }
+            catch (Exception)
+            {
+                return false;
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 修改状态
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<bool> EditState(int id)
+        {
+            try
+            {
+                var predicate = PredicateBuilder.New<Dictionariesentry>(true);
+                predicate.And(t => t.Id == id);
+                var data = await _IDictionariesentryRepository.FirstOrDefaultAsync(predicate);
+                if (data.State == true)
+                {
+                    data.State = false;
+                    return await _IDictionariesentryRepository.UpdateAsync(data);
+                }
+                else
+                {
+                    data.State = true;
+                    return await _IDictionariesentryRepository.UpdateAsync(data);
+                }
             }
             catch (Exception)
             {

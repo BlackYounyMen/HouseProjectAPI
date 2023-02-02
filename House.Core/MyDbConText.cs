@@ -1,6 +1,7 @@
 ﻿using House.Model;
 using House.Model.ContractManagement;
 using House.Model.CustomerManagement;
+using House.Model.SystemSettings;
 using Microsoft.EntityFrameworkCore;
 
 namespace House.Core
@@ -86,6 +87,15 @@ namespace House.Core
         /// </summary>
 
         public virtual DbSet<Subscriptioninfo> Subscriptioninfo { get; set; }
+
+        #endregion
+
+        #region 系统数据
+
+        /// <summary>
+        /// 字典项表
+        /// </summary>
+        public virtual DbSet<Dictionariesentry> Dictionariesentry { get; set; }
 
         #endregion
 
