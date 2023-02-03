@@ -102,8 +102,9 @@ namespace House.API
                 c.SwaggerEndpoint("/swagger/Device/swagger.json", "设备管理");
                 c.SwaggerEndpoint("/swagger/Customerinfo/swagger.json", "客户管理");
                 c.SwaggerEndpoint("/swagger/Customer/swagger.json", "合同管理");
-                c.SwaggerEndpoint("/swagger/ContractMan/swagger.json", "合同信息");
+                c.SwaggerEndpoint("/swagger/ContractMan/swagger.json", "合同信息"); 
                 c.SwaggerEndpoint("/swagger/Dice/swagger.json", "字典管理");
+                c.SwaggerEndpoint("/swagger/Department/swagger.json", "部门管理");
             });
         }
 
@@ -155,6 +156,11 @@ namespace House.API
                 {
                     Version = "v1.0.0",
                     Title = "字典管理"
+                }); 
+                options.SwaggerDoc("Department", new OpenApiInfo
+                {
+                    Version = "v1.0.0",
+                    Title = "部门管理"
                 });
                 //按照分组取api文档
                 options.DocInclusionPredicate((docName, apiDes) =>

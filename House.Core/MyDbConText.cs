@@ -98,6 +98,8 @@ namespace House.Core
         public virtual DbSet<Dictionariesentry> Dictionariesentry { get; set; }
         public virtual DbSet<Dictionaries> Dictionaries { get; set; }
 
+        public virtual DbSet<Deptmarage> Deptmarage { get; set; }
+
         #endregion
 
         /// <summary>
