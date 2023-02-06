@@ -27,6 +27,22 @@ namespace House.API.Controllers.SystemSettings
         }
 
         /// <summary>
+        /// 字典项下拉数据显示
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<PageModel<Dictionariesentry>> GetSelect(int id)
+        {
+            var predicate = PredicateBuilder.New<Dictionariesentry>(true);
+            predicate.And(t => t.Pid == id);
+            var data = await _IDictionariesentryRepository.GetAllListAsync(predicate);
+            PageModel<Dictionariesentry> dictionariesentry = new PageModel<Dictionariesentry>();
+            dictionariesentry.Data = data;
+            return dictionariesentry;
+        }
+
+        /// <summary>
         /// 数据显示
         /// </summary>
         /// <param name="id"></param>
