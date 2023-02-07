@@ -88,6 +88,8 @@ namespace House.Core
 
         public virtual DbSet<Subscriptioninfo> Subscriptioninfo { get; set; }
 
+     
+
         #endregion
 
         #region 系统数据

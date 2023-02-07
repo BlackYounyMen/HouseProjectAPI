@@ -27,5 +27,7 @@ namespace House.Model.ContractManagement
         public decimal ActualAmount { get; set; }
         public DateTime SigningDate { get; set; }
         public string CustomerId { get; set; }
+
+        public double SumMoney { get; set; }
     }
 }
