@@ -96,9 +96,25 @@ namespace House.Core
         /// 字典项表
         /// </summary>
         public virtual DbSet<Dictionariesentry> Dictionariesentry { get; set; }
+        /// <summary>
+        /// 字典表
+        /// </summary>
         public virtual DbSet<Dictionaries> Dictionaries { get; set; }
+        /// <summary>
+        /// 部门管理
+        /// </summary>
 
         public virtual DbSet<Deptmarage> Deptmarage { get; set; }
+        /// <summary>
+        /// 人力资源管理
+        /// </summary>
+
+        public virtual DbSet<Humanresources> Humanresources { get; set; }
+        /// <summary>
+        /// 日志管理
+        /// </summary>
+        public virtual DbSet<Log> log { get; set; }
+        
 
         #endregion
 

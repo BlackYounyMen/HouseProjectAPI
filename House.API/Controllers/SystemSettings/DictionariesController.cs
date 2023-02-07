@@ -28,6 +28,10 @@ namespace House.API.Controllers.SystemSettings
             _IDictionariesRepository = _DictionariesRepository;
         }
 
+
+
+
+
         /// <summary>
         /// 数据显示
         /// </summary>
@@ -36,7 +40,7 @@ namespace House.API.Controllers.SystemSettings
         /// <param name="pagesize"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PageModel<Dictionaries>> GetAll(string name  , int pageindex, int pagesize)
+        public async Task<PageModel<Dictionaries>> GetAll(string name , int pageindex, int pagesize)
         {
             var predicate = PredicateBuilder.New<Dictionaries>(true);
             if (!string.IsNullOrEmpty(name))

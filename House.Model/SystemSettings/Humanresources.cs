@@ -17,7 +17,10 @@ namespace House.Model.SystemSettings
         public string Name { get; set; }
         public string Pwd { get; set; }
         public bool State { get; set; }
-        public int DeptId { get; set; }
+        /// <summary>
+        /// 部门关联
+        /// </summary>
+        public string DeptId { get; set; }
         public string Major { get; set; }
         public string Position { get; set; }
         public string NumberID { get; set; }
