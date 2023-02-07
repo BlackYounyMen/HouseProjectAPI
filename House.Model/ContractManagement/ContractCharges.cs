@@ -13,7 +13,7 @@ namespace House.Model.ContractManagement
     public class ContractCharges : EntityBase
     {
         
-        public string ContractId { get; set; }
+        public int ContractId { get; set; }
         public decimal AmountRecorded { get; set; }
         public string Contractinfo { get; set; }
         public DateTime RecordedTime { get; set; }

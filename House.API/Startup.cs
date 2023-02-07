@@ -2,10 +2,12 @@ using Autofac;
 using House.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -78,6 +80,22 @@ namespace House.API
             //启用静态文件
             app.UseStaticFiles();
 
+            //访问其他文件夹底下的静态文件
+            app.UseFileServer(new FileServerOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), @"FileModel")),
+                RequestPath = new PathString("/FileModel"),//别名，可以写： xx/002.jpg
+                EnableDirectoryBrowsing = false  //等价于：app.UseDirectoryBrowser();
+            });
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), @"FileModel")),
+                RequestPath = new PathString("/StaticFiles")
+            });
+
             //跨域
             app.UseCors(o => o.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
@@ -102,7 +120,7 @@ namespace House.API
                 c.SwaggerEndpoint("/swagger/Device/swagger.json", "设备管理");
                 c.SwaggerEndpoint("/swagger/Customerinfo/swagger.json", "客户管理");
                 c.SwaggerEndpoint("/swagger/Customer/swagger.json", "合同管理");
-                c.SwaggerEndpoint("/swagger/ContractMan/swagger.json", "合同信息"); 
+                c.SwaggerEndpoint("/swagger/ContractMan/swagger.json", "合同信息");
                 c.SwaggerEndpoint("/swagger/Dice/swagger.json", "字典管理");
                 c.SwaggerEndpoint("/swagger/Department/swagger.json", "部门管理");
             });
@@ -156,7 +174,7 @@ namespace House.API
                 {
                     Version = "v1.0.0",
                     Title = "字典管理"
-                }); 
+                });
                 options.SwaggerDoc("Department", new OpenApiInfo
                 {
                     Version = "v1.0.0",
