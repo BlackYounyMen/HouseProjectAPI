@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace House.API.Controllers.SystemSettings
 {
@@ -32,14 +33,12 @@ namespace House.API.Controllers.SystemSettings
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PageModel<Dictionariesentry>> GetSelect(int id)
+        public async Task<List<Dictionariesentry>> GetSelect(int id)
         {
             var predicate = PredicateBuilder.New<Dictionariesentry>(true);
             predicate.And(t => t.Pid == id);
-            var data = await _IDictionariesentryRepository.GetAllListAsync(predicate);
-            PageModel<Dictionariesentry> dictionariesentry = new PageModel<Dictionariesentry>();
-            dictionariesentry.Data = data;
-            return dictionariesentry;
+            var data = await _IDictionariesentryRepository.GetAllListAsync(predicate);          
+            return data;
         }
 
         /// <summary>
