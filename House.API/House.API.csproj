@@ -49,6 +49,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\File\Annex\" />
     <Folder Include="FileModel\" />
+    <Folder Include="FileModel\" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,6 @@
 using Autofac;
 using House.Core;
+using House.Model;
 using House.Model.SystemSettings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -125,7 +126,8 @@ namespace House.API
                 c.SwaggerEndpoint("/swagger/Dice/swagger.json", "字典管理"); 
                 c.SwaggerEndpoint("/swagger/Department/swagger.json", "部门管理");
                 c.SwaggerEndpoint("/swagger/HumanResources/swagger.json", "人力资源管理");
-                c.SwaggerEndpoint("/swagger/Log/swagger.json", "日志管理");
+                c.SwaggerEndpoint("/swagger/Log/swagger.json", "日志管理"); 
+                c.SwaggerEndpoint("/swagger/Notice/swagger.json", "公告管理");
             });
         }
 
@@ -192,6 +194,11 @@ namespace House.API
                 {
                     Version = "v1.0.0",
                     Title = "日志管理"
+                });
+                options.SwaggerDoc("Notice", new OpenApiInfo
+                {
+                    Version = "v1.0.0",
+                    Title = "公告管理"
                 });
                 //按照分组取api文档
                 options.DocInclusionPredicate((docName, apiDes) =>

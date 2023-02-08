@@ -124,5 +124,9 @@ namespace House.Core
         /// 附件表
         /// </summary>
         public virtual DbSet<Fileinfo> Fileinfo { get; set; }
+        /// <summary>
+        /// 公告管理
+        /// </summary>
+        public virtual DbSet<Notice> notice { get; set; }
     }
 }
