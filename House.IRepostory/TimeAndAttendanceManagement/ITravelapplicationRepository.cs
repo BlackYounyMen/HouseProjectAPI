@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace House.IRepository.TimeAndAttendanceManagement
+namespace House.IRepository
 {
     /// <summary>
     /// 出差申请

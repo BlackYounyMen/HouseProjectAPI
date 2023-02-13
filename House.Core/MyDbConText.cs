@@ -2,6 +2,7 @@
 using House.Model.ContractManagement;
 using House.Model.CustomerManagement;
 using House.Model.SystemSettings;
+using House.Model.TimeAndAttendanceManagement;
 using Microsoft.EntityFrameworkCore;
 
 namespace House.Core
@@ -116,7 +117,27 @@ namespace House.Core
         /// 日志管理
         /// </summary>
         public virtual DbSet<Log> log { get; set; }
-        
+
+
+        #endregion
+
+        #region 考勤申请管理
+
+        /// <summary>
+        /// 出差提交申请
+        /// </summary>
+        public virtual DbSet<Travelapplication> Travelapplication { get; set; }
+
+        /// <summary>
+        /// 外勤提交申请
+        /// </summary>
+        public virtual DbSet<Outworkapplication> Outworkapplication { get; set; }
+
+        /// <summary>
+        /// 请假提交申请
+        /// </summary>
+        public virtual DbSet<Leaveapplication> Leaveapplication { get; set; }
+
 
         #endregion
 

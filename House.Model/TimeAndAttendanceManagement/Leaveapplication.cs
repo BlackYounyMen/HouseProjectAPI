@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +14,10 @@ namespace House.Model.TimeAndAttendanceManagement
     public class Leaveapplication : EntityBase
     {
         
-        public string MyProperty { get; set; }
+        public string Reason { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+      
         public decimal Statistics { get; set; }
         public string Remarks { get; set; }
         public string Applicant { get; set; }

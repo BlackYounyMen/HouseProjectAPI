@@ -127,7 +127,8 @@ namespace House.API
                 c.SwaggerEndpoint("/swagger/Department/swagger.json", "部门管理");
                 c.SwaggerEndpoint("/swagger/HumanResources/swagger.json", "人力资源管理");
                 c.SwaggerEndpoint("/swagger/Log/swagger.json", "日志管理"); 
-                c.SwaggerEndpoint("/swagger/Notice/swagger.json", "公告管理");
+                c.SwaggerEndpoint("/swagger/Notice/swagger.json", "公告管理"); 
+                c.SwaggerEndpoint("/swagger/AttendanceCommit/swagger.json", "考勤提交管理");
             });
         }
 
@@ -199,6 +200,11 @@ namespace House.API
                 {
                     Version = "v1.0.0",
                     Title = "公告管理"
+                }); 
+                options.SwaggerDoc("AttendanceCommit", new OpenApiInfo
+                {
+                    Version = "v1.0.0",
+                    Title = "考勤提交管理"
                 });
                 //按照分组取api文档
                 options.DocInclusionPredicate((docName, apiDes) =>
