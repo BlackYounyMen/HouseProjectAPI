@@ -47,6 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\AttendanceManage\" />
     <Folder Include="wwwroot\File\Annex\" />
     <Folder Include="FileModel\" />
     <Folder Include="FileModel\" />

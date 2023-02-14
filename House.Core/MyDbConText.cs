@@ -1,6 +1,7 @@
 ﻿using House.Model;
 using House.Model.ContractManagement;
 using House.Model.CustomerManagement;
+using House.Model.DeviceManagement;
 using House.Model.SystemSettings;
 using House.Model.TimeAndAttendanceManagement;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +49,12 @@ namespace House.Core
         /// 水表
         /// </summary>
         public virtual DbSet<WaterMeter> WaterMeter { get; set; }
+
+        public virtual DbSet<Fan> Fan { get; set; }
+
+        public virtual DbSet<Firedoor> Firedoor { get; set; }
+
+        public virtual DbSet<Electricmeter> Electricmeter { get; set; }
 
         #endregion
 
