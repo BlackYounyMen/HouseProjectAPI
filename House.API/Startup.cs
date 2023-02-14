@@ -203,13 +203,13 @@ namespace House.API
                 {
                     Version = "v1.0.0",
                     Title = "公告管理"
-                }); 
+                });
                 options.SwaggerDoc("AttendanceCommit", new OpenApiInfo
                 {
                     Version = "v1.0.0",
                     Title = "考勤提交管理"
                 });
-          
+              
                 options.SwaggerDoc("Holiday", new OpenApiInfo
                 {
                     Version = "v1.0.0",
