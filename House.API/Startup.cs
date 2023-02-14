@@ -122,12 +122,13 @@ namespace House.API
                 c.SwaggerEndpoint("/swagger/Device/swagger.json", "设备管理");
                 c.SwaggerEndpoint("/swagger/Customerinfo/swagger.json", "客户管理");
                 c.SwaggerEndpoint("/swagger/Customer/swagger.json", "合同管理");
-                c.SwaggerEndpoint("/swagger/ContractMan/swagger.json", "合同信息"); 
-                c.SwaggerEndpoint("/swagger/Dice/swagger.json", "字典管理"); 
+                c.SwaggerEndpoint("/swagger/ContractMan/swagger.json", "合同信息");
+                c.SwaggerEndpoint("/swagger/Dice/swagger.json", "字典管理");
                 c.SwaggerEndpoint("/swagger/Department/swagger.json", "部门管理");
                 c.SwaggerEndpoint("/swagger/HumanResources/swagger.json", "人力资源管理");
-                c.SwaggerEndpoint("/swagger/Log/swagger.json", "日志管理"); 
+                c.SwaggerEndpoint("/swagger/Log/swagger.json", "日志管理");
                 c.SwaggerEndpoint("/swagger/Notice/swagger.json", "公告管理");
+                c.SwaggerEndpoint("/swagger/Holiday/swagger.json", "节假日设置");
             });
         }
 
@@ -184,7 +185,7 @@ namespace House.API
                 {
                     Version = "v1.0.0",
                     Title = "部门管理"
-                }); 
+                });
                 options.SwaggerDoc("HumanResources", new OpenApiInfo
                 {
                     Version = "v1.0.0",
@@ -199,6 +200,11 @@ namespace House.API
                 {
                     Version = "v1.0.0",
                     Title = "公告管理"
+                });
+                options.SwaggerDoc("Holiday", new OpenApiInfo
+                {
+                    Version = "v1.0.0",
+                    Title = "节假日设置"
                 });
                 //按照分组取api文档
                 options.DocInclusionPredicate((docName, apiDes) =>

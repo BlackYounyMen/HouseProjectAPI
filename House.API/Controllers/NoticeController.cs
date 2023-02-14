@@ -21,13 +21,12 @@ namespace House.API.Controllers
     {
         private readonly INoticeRepository _INoticeRepository;
         private readonly IHumanResourcesRepository _IHumanResourcesRepository;
+
         public NoticeController(INoticeRepository _InoticeRepository, IHumanResourcesRepository _IhumanResourcesRepository)
         {
             _INoticeRepository = _InoticeRepository;
             _IHumanResourcesRepository = _IhumanResourcesRepository;
         }
-
-
 
         /// <summary>
         /// 获取人员所有信息
@@ -61,7 +60,6 @@ namespace House.API.Controllers
             var state = await _INoticeRepository.InsertAsync(notice);
             return state;
         }
-
 
         /// <summary>
         /// 数据显示
@@ -104,9 +102,7 @@ namespace House.API.Controllers
             Dtp.ReleaseTime = data.ReleaseTime;
             Dtp.PublishUser = data.PublishUser;
             Dtp.State = data.State;
-          
 
-          
             List<int> i = new List<int>();
             var item = data.AcceptRole.Split(',');
             foreach (var a in item)
@@ -130,9 +126,6 @@ namespace House.API.Controllers
             Notice.Item = Dtp;
             return Notice;
         }
-
-
-
 
         /// <summary>
         /// 修改
@@ -173,6 +166,5 @@ namespace House.API.Controllers
                 throw;
             }
         }
-
     }
 }
