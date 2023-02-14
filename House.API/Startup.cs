@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.IO;
@@ -208,7 +209,7 @@ namespace House.API
                     Version = "v1.0.0",
                     Title = "考勤提交管理"
                 });
-                });
+          
                 options.SwaggerDoc("Holiday", new OpenApiInfo
                 {
                     Version = "v1.0.0",

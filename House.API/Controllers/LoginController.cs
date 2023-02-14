@@ -1,10 +1,14 @@
 ﻿using House.Dto;
 using House.IRepository;
+using House.IRepository.SystemSettings;
 using House.IRepository.User;
 using House.Model;
+using House.Repository;
 using LinqKit;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.SS.Formula.Functions;
+using Smart.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,14 +29,40 @@ namespace House.API.Controllers
         private readonly IRoleRepository _IRoleRepository;
         private readonly IRolePowerRepository _IRolePowerRepository;
         private readonly IPowerRepository _IPowerRepository;
+        private readonly ILoginLogRepository _ILoginLogRepository;
 
-        public LoginController(IPersonnelRepository iPersonnelRepository, IPersonnelRoleRepository iPersonnelRoleRepository, IRoleRepository iRoleRepository, IRolePowerRepository iRolePowerRepository, IPowerRepository iPowerRepository)
+        public LoginController(IPersonnelRepository iPersonnelRepository, IPersonnelRoleRepository iPersonnelRoleRepository, IRoleRepository iRoleRepository, IRolePowerRepository iRolePowerRepository, IPowerRepository iPowerRepository, ILoginLogRepository iLoginLogRepository)
         {
             _IPersonnelRepository = iPersonnelRepository;
             _IPersonnelRoleRepository = iPersonnelRoleRepository;
             _IRoleRepository = iRoleRepository;
             _IRolePowerRepository = iRolePowerRepository;
             _IPowerRepository = iPowerRepository;
+            _ILoginLogRepository = iLoginLogRepository;
+        }
+
+
+        /// <summary>
+        /// 数据显示
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="pageindex"></param>
+        /// <param name="pagesize"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<PageModel<Loginlog>> GetAll(string name, int pageindex, int pagesize)
+        {
+            var predicate = PredicateBuilder.New<Loginlog>(true);
+            if (!string.IsNullOrEmpty(name))
+            {
+                predicate.And(t => t.PCName.Contains(name));
+            }
+            var data = await _ILoginLogRepository.GetAllListAsync(predicate);
+            PageModel<Loginlog> Notice = new PageModel<Loginlog>();
+            Notice.PageCount = data.Count();
+            Notice.PageSize = Convert.ToInt32(Math.Ceiling(data.Count * 1.0 / pagesize));
+            Notice.Data = data.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+            return Notice;
         }
 
         /// <summary>
@@ -51,7 +81,22 @@ namespace House.API.Controllers
             {
                 Token<Personnel> d = new Token<Personnel>();
                 d.Result = data;
+                if (data != null)
+                {
+                    Loginlog loginlog = new Loginlog
+                    {
+                        User = data.Name,
+                        LoginTime = DateTime.Now,
+                        PCIP = Convert.ToString(NetWorkHelper.GetIPInfo()),
+                        PCName = NetWorkHelper.GetComputerName(),
+                        OS = NetWorkHelper.GetOSDesc(),
+                        Browser = GetBrowser(Request.Headers["User-Agent"].ToString())
+                    };
 
+
+                    _ILoginLogRepository.Insert(loginlog);
+                   
+                }
                 return d;
             }
             else
@@ -63,6 +108,44 @@ namespace House.API.Controllers
             }
         }
 
+        /// <summary>
+        /// 获取浏览器名称
+        /// </summary>
+        /// <returns></returns>
+        public static string GetBrowser(string name)
+        {
+
+            var userAgent = name;
+
+            if (userAgent.Contains("Opera/ucweb"))
+            { return "UC Opera"; }
+            else if (userAgent.Contains("Openwave/ ucweb"))
+            { return "UCOpenwave"; }
+            else if (userAgent.Contains("Ucweb"))
+            { return "UC"; }
+            else if (userAgent.Contains("360se"))
+            { return "360"; }
+            else if (userAgent.Contains("Metasr"))
+            { return "搜狗"; }
+            else if (userAgent.Contains("Maxthon"))
+            { return "遨游"; }
+            else if (userAgent.Contains("The world"))
+            { return "世界之窗"; }
+            else if (userAgent.Contains("Tencenttraveler") || userAgent.Contains("qqbrowser"))
+            { return "腾讯"; }
+            else if (userAgent.Contains("Chrome"))
+            { return "Chrome"; }
+            else if (userAgent.Contains("Safari"))
+            { return "safari"; }
+            else if (userAgent.Contains("Firefox"))
+            { return "Firefox"; }
+            else if (userAgent.Contains("Opera"))
+            { return "Opera"; }
+            else if (userAgent.Contains("Msie"))
+            { return "IE"; }
+            else
+            { return "不知名的傻逼浏览器"; }
+        }
         /// <summary>
         /// 权限查询
         /// </summary>

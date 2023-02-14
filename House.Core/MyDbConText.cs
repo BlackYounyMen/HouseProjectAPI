@@ -125,6 +125,10 @@ namespace House.Core
         /// </summary>
         public virtual DbSet<Log> log { get; set; }
 
+        /// <summary>
+        /// 登录日志
+        /// </summary>
+        public virtual DbSet<Loginlog> Loginlog { get; set; }
 
         #endregion
 
