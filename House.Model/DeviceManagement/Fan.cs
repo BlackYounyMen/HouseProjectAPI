@@ -16,6 +16,6 @@ namespace House.Model.DeviceManagement
         public int Building { get; set; }
         public int UnitNum { get; set; }
         public int FloorNum { get; set; }
-        public int FanState { get; set; }
+        public bool FanState { get; set; }
     }
 }
