@@ -1,4 +1,5 @@
-﻿using House.Dto;
+﻿using House.Cache;
+using House.Dto;
 using House.IRepository;
 using House.IRepository.SystemSettings;
 using House.IRepository.User;
@@ -41,6 +42,45 @@ namespace House.API.Controllers
             _ILoginLogRepository = iLoginLogRepository;
         }
 
+        /// <summary>
+        /// 获取浏览器名称
+        /// </summary>
+        /// <returns></returns>
+        public static string GetBrowser(string name)
+        {
+            var userAgent = name;
+
+            if (userAgent.Contains("Opera/ucweb"))
+            { return "UC Opera"; }
+            else if (userAgent.Contains("Openwave/ ucweb"))
+            { return "UCOpenwave"; }
+            else if (userAgent.Contains("Edge"))
+            { return "Edge"; }
+            else if (userAgent.Contains("Ucweb"))
+            { return "UC"; }
+            else if (userAgent.Contains("360se"))
+            { return "360"; }
+            else if (userAgent.Contains("Metasr"))
+            { return "搜狗"; }
+            else if (userAgent.Contains("Maxthon"))
+            { return "遨游"; }
+            else if (userAgent.Contains("The world"))
+            { return "世界之窗"; }
+            else if (userAgent.Contains("Tencenttraveler") || userAgent.Contains("qqbrowser"))
+            { return "腾讯"; }
+            else if (userAgent.Contains("Chrome"))
+            { return "Chrome"; }
+            else if (userAgent.Contains("Safari"))
+            { return "safari"; }
+            else if (userAgent.Contains("Firefox"))
+            { return "Firefox"; }
+            else if (userAgent.Contains("Opera"))
+            { return "Opera"; }
+            else if (userAgent.Contains("Msie"))
+            { return "IE"; }
+            else
+            { return "不知名的傻逼浏览器"; }
+        }
 
         /// <summary>
         /// 数据显示
@@ -93,9 +133,7 @@ namespace House.API.Controllers
                         Browser = GetBrowser(Request.Headers["User-Agent"].ToString())
                     };
 
-
                     _ILoginLogRepository.Insert(loginlog);
-                   
                 }
                 return d;
             }
@@ -108,44 +146,6 @@ namespace House.API.Controllers
             }
         }
 
-        /// <summary>
-        /// 获取浏览器名称
-        /// </summary>
-        /// <returns></returns>
-        public static string GetBrowser(string name)
-        {
-
-            var userAgent = name;
-
-            if (userAgent.Contains("Opera/ucweb"))
-            { return "UC Opera"; }
-            else if (userAgent.Contains("Openwave/ ucweb"))
-            { return "UCOpenwave"; }
-            else if (userAgent.Contains("Ucweb"))
-            { return "UC"; }
-            else if (userAgent.Contains("360se"))
-            { return "360"; }
-            else if (userAgent.Contains("Metasr"))
-            { return "搜狗"; }
-            else if (userAgent.Contains("Maxthon"))
-            { return "遨游"; }
-            else if (userAgent.Contains("The world"))
-            { return "世界之窗"; }
-            else if (userAgent.Contains("Tencenttraveler") || userAgent.Contains("qqbrowser"))
-            { return "腾讯"; }
-            else if (userAgent.Contains("Chrome"))
-            { return "Chrome"; }
-            else if (userAgent.Contains("Safari"))
-            { return "safari"; }
-            else if (userAgent.Contains("Firefox"))
-            { return "Firefox"; }
-            else if (userAgent.Contains("Opera"))
-            { return "Opera"; }
-            else if (userAgent.Contains("Msie"))
-            { return "IE"; }
-            else
-            { return "不知名的傻逼浏览器"; }
-        }
         /// <summary>
         /// 权限查询
         /// </summary>
