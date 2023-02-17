@@ -175,7 +175,8 @@ namespace House.API.Controllers.User
         [HttpGet]
         public async Task<string> GetHoilday(int id)
         {
-            string sqlcontent = "select * from  attendance20232 where UserId =  " + id;
+            string sqlcontent = " select* from  attendance20232 where UserId =" + id + " ORDER BY AttendanceType ASC ;";
+      
             using (var conn = new MySqlConnection("server=127.0.0.1;database=houseproject;userid=root;pwd=123456;port=3306;sslmode=none;CharSet=utf8;allowPublicKeyRetrieval=true;;SslMode=None;Pooling=true"))
             {
                 conn.Open();
