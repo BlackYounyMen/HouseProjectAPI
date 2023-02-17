@@ -12,6 +12,9 @@ using House.Dto;
 using System.Linq;
 using System;
 using System.IO;
+using MySqlConnector;
+using System.Data;
+using Newtonsoft.Json;
 
 namespace House.API.Controllers.User
 {
@@ -164,5 +167,25 @@ namespace House.API.Controllers.User
             return true;
         }
 
+        /// <summary>
+        /// 获取人员的对象
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<string> GetHoilday(int id)
+        {
+            string sqlcontent = "select * from  attendance20232 where UserId =  " + id;
+            using (var conn = new MySqlConnection("server=127.0.0.1;database=houseproject;userid=root;pwd=123456;port=3306;sslmode=none;CharSet=utf8;allowPublicKeyRetrieval=true;;SslMode=None;Pooling=true"))
+            {
+                conn.Open();
+                var adp = new MySqlDataAdapter(sqlcontent, conn);
+                DataSet ds = new DataSet();
+                adp.Fill(ds);
+
+                var result = JsonConvert.SerializeObject(ds.Tables[0]);
+                return result;
+            }
+        }
     }
 }
