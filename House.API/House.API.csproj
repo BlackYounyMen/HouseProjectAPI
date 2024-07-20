@@ -51,6 +51,7 @@
     <Folder Include="wwwroot\File\Annex\" />
     <Folder Include="FileModel\" />
     <Folder Include="FileModel\" />
+    <Folder Include="wwwroot\FileDemoData\" />
   </ItemGroup>
 
 </Project>
