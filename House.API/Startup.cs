@@ -131,6 +131,7 @@ namespace House.API
                 c.SwaggerEndpoint("/swagger/Notice/swagger.json", "公告管理");
                 c.SwaggerEndpoint("/swagger/AttendanceCommit/swagger.json", "考勤提交管理");
                 c.SwaggerEndpoint("/swagger/Holiday/swagger.json", "节假日设置");
+                c.SwaggerEndpoint("/swagger/Excel/swagger.json", "表格设置");
             });
         }
 
@@ -213,6 +214,11 @@ namespace House.API
                 {
                     Version = "v1.0.0",
                     Title = "节假日设置"
+                });
+                options.SwaggerDoc("Excel", new OpenApiInfo
+                {
+                    Version = "v1.0.0",
+                    Title = "表格设置"
                 });
                 //按照分组取api文档
                 options.DocInclusionPredicate((docName, apiDes) =>

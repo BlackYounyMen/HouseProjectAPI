@@ -2,6 +2,7 @@
 using House.Model.ContractManagement;
 using House.Model.CustomerManagement;
 using House.Model.DeviceManagement;
+using House.Model.Excel;
 using House.Model.SystemSettings;
 using House.Model.TimeAndAttendanceManagement;
 using Microsoft.EntityFrameworkCore;
@@ -166,5 +167,11 @@ namespace House.Core
         /// 公告管理
         /// </summary>
         public virtual DbSet<Notice> notice { get; set; }
+
+
+        /// <summary>
+        /// 表格管理
+        /// </summary>
+        public virtual DbSet<ExcelClass>  excelclasse { get; set; }
     }
 }
