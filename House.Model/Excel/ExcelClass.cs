@@ -42,5 +42,11 @@ namespace House.Model.Excel
         /// 标题
         /// </summary>
         public string title { get; set; }
+
+
+        /// <summary>
+        /// 采购时间
+        /// </summary>
+        public DateTime usetime { get; set; }
     }
 }

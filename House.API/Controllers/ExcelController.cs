@@ -13,6 +13,9 @@ using System.Collections.Generic;
 using House.IRepository.DeviceManagement;
 using House.IRepository;
 using House.Model.Excel;
+using House.Model.SystemSettings;
+using System.Text;
+using System.Xml.Linq;
 
 namespace House.API.Controllers
 {
@@ -33,9 +36,13 @@ namespace House.API.Controllers
 
         private readonly IExcelRepository _iexcelrepository;
 
-        public ExcelController(IExcelRepository excelRepository)
+
+        private readonly IExcelDicRepository _excelDicRepository;
+
+        public ExcelController(IExcelRepository excelRepository  , IExcelDicRepository excelDicRepository)
         {
             _iexcelrepository = excelRepository;
+            _excelDicRepository = excelDicRepository;
         }
 
 
@@ -49,7 +56,7 @@ namespace House.API.Controllers
         /// <param name="path"></param>
         /// <returns></returns>
         [HttpPost("ExcelRun")]
-        public string ExcelRun(string path)
+        public string ExcelRun(string path , DateTime dateTime)
         {
             int totalcount = 0;
 
@@ -75,8 +82,9 @@ namespace House.API.Controllers
                         {
                             ICell cell = sheet.GetRow(rowIndex).GetCell(columnIndex); // 获取单元格
                             var DelStr = cell.ToString();
+
                             switch (DelStr)
-                            {                               
+                            {
                                 #region 舍去字段
                                 case "名称": break;
                                 case "规格": break;
@@ -111,7 +119,6 @@ namespace House.API.Controllers
                                     }
                                     break;
                             }
-
                         }
                         #region  数据已经获取
                       
@@ -128,13 +135,39 @@ namespace House.API.Controllers
                                 data.sum = sum;
                                 data.dictionary = titleid;
                                 data.title = title;
+                                data.usetime = dateTime;
 
+                                var json = JsonConvert.SerializeObject(data);  //序列化成json文件
 
+                                var  olddata  = _excelDicRepository.GetAllList();
+                                var i = 0;
 
-                                //  var json = JsonConvert.SerializeObject(data);  序列化成json文件
+                                var oldnum = "";
+
+                                foreach (var item in olddata)
+                                {
+                                    if (item.name == name)
+                                    {
+                                        i++;
+                                        oldnum = item.num; break;
+                                    };
+                                }
+                                ExcelDic dic = new ExcelDic();
+                                dic.name = name;
+                                dic.coding = NPinyin.Pinyin.GetPinyin(name);
+                                dic.usetime = dateTime.Month.ToString();
+                                //
+                                if (i == 0)
+                                {   
+                                    dic.num = num;                                  
+                                    _excelDicRepository.InsertAsync(dic);
+                                }
+                                else {
+                                    _excelDicRepository.UpdateAsync(dic);
+                                }
 
                                 //此为增加历史表格记录 每天承新增开始 先目标需求 在有一张表  ,查询 此表当中 有没有这个字段（例如 中华鲟 香菜 或者 香油 等等 有的话就修改他的数量  没有的话就给他进行新增操作）
-                                Console.WriteLine(JsonConvert.SerializeObject(data) );
+                                // Console.WriteLine(JsonConvert.SerializeObject(data));
 
                                 _iexcelrepository.Insert(data);
                             
@@ -156,6 +189,49 @@ namespace House.API.Controllers
             return null;
 
         }
+
+        //private string DeleteField(string DelStr, int columnIndex)
+        //{
+        //    switch (DelStr)
+        //    {
+        //        #region 舍去字段
+        //        case "名称": break;
+        //        case "规格": break;
+        //        case "单价": break;
+        //        case "数量": break;
+        //        case "总价": break;
+        //        case "合计": break;
+        //        #endregion
+        //        default:
+        //            if (!string.IsNullOrEmpty(DelStr)) // 检查单元格是否存在  
+        //            {
+        //                如果已经获取分类手段 ，在遇见新的分类，重新进行划分
+        //                switch (DelStr)
+        //                {
+        //                    case "": break;
+        //                    case "肉类采购": titleid = "1"; title = "肉类采购"; break;
+        //                    case "蔬果采购": titleid = "2"; title = "蔬果采购"; break;
+        //                    case "调料采购": titleid = "3"; title = "调料采购"; break;
+        //                    case "其他采购": titleid = "4"; title = "其他采购"; break;
+
+        //                }
+        //                switch (columnIndex)
+        //                {
+        //                    case 0: name = DelStr; break;
+        //                    case 1: specification = DelStr; break;
+        //                    case 2: price = DelStr; break;
+        //                    case 3: num = DelStr; break;
+        //                    case 4: sum = DelStr; break;
+        //                    default: break;
+        //                }
+        //                break;
+        //            }
+        //            break;
+        //    }
+
+
+        //    return
+        //}
 
 
     }

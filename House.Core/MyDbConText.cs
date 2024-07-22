@@ -172,6 +172,11 @@ namespace House.Core
         /// <summary>
         /// 表格管理
         /// </summary>
-        public virtual DbSet<ExcelClass>  excelclasse { get; set; }
+        public virtual DbSet<ExcelClass>  excelclass { get; set; }
+
+        /// <summary>
+        /// 表格管理
+        /// </summary>
+        public virtual DbSet<ExcelDic> exceldic { get; set; }
     }
 }
