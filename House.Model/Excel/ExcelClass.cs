@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace House.Model.Excel
 {
+    /// <summary>
+    /// 每天记录的采购总数
+    /// </summary>
     public class ExcelClass:EntityBase
     {
         /// <summary>

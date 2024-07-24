@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace House.IRepository
+namespace House.IRepository.Excel
 {
-    public interface IExcelDicRepository :IBaseService<ExcelDic>
+    public interface IExcelRepository : IBaseService<ExcelClass>
     {
     }
 }

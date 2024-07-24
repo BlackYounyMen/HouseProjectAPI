@@ -13,6 +13,12 @@ namespace House.Model.Excel
         /// </summary>
         public string name { get; set; }
 
+
+        /// <summary>
+        /// 食品规格
+        /// </summary>
+        public string specification { get; set; }
+
         /// <summary>
         /// 字典值
         /// </summary>
@@ -21,7 +27,7 @@ namespace House.Model.Excel
         
 
         /// <summary>
-        /// 商品
+        /// 数量
         /// </summary>
         public string num { get; set; }
 
@@ -35,5 +41,8 @@ namespace House.Model.Excel
         /// 总金额
         /// </summary>
         public string summoney { get; set; }
+
+
+        public string title { get; set; }
     }
 }

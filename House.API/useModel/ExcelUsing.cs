@@ -36,4 +36,11 @@ namespace House.Model.Excel
         /// </summary>
         public string summoney { get; set; }
     }
+
+
+    public class ExcelDemo 
+    {
+        public string path { get; set; }
+        public DateTime dateTime { get; set; }
+    }
 }

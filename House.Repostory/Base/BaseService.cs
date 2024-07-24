@@ -121,9 +121,42 @@ namespace House.Repository
         public async Task<bool> UpdateAsync(T entity)
         {
             AttachIfNot(entity);
+            
+           _db.Entry(entity).State = EntityState.Modified;
+            return await SaveAsync();
+        }
+
+
+
+        public async Task<bool> AUpdateAsync(T entity)
+        {
+            AttachIfNotA(entity);
             _db.Entry(entity).State = EntityState.Modified;
             return await SaveAsync();
         }
+
+
+
+
+        protected virtual void AttachIfNotA(T entity)
+        {
+            var entry = _db.ChangeTracker.Entries<T>().FirstOrDefault(ent => ent.Entity == entity);
+            if (entry == null)
+            {
+                var key = _db.Model.FindEntityType(typeof(T)).FindPrimaryKey().Properties[0];
+                var keyValue = key.PropertyInfo.GetValue(entity);
+
+                var existingEntity = _db.Set<T>().Find(keyValue);
+                if (existingEntity != null)
+                {
+                    _db.Entry(existingEntity).State = EntityState.Detached;
+                }
+
+                Table.Attach(entity);
+            }
+        }
+
+
 
         public bool Delete(T entity)
         {

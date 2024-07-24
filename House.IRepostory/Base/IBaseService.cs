@@ -121,6 +121,9 @@ namespace House.IRepository
         /// <returns></returns>
         Task<bool> UpdateAsync(T entity);
 
+        Task<bool> AUpdateAsync(T entity);
+
+
         #endregion 修改
 
         #region 删除

@@ -61,7 +61,7 @@ namespace House.API.Controllers.AttendanceManage
         [HttpGet]
         public async Task<PageModel<Travelapplication>> GetAll(string name, int pageindex, int pagesize)
         {
-            var predicate = PredicateBuilder.New<Travelapplication>(true);
+            var predicate  = PredicateBuilder.New<Travelapplication>(true);
             if (!string.IsNullOrEmpty(name))
             {
                 predicate.And(t => t.ProjectName.Contains(name));
