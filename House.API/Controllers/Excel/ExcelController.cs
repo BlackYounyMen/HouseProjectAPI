@@ -36,6 +36,12 @@ namespace House.API.Controllers.Excel
     //  此页面所有人都可以进行查看展示  但是要修改数据的金额 要采购人 使用
 
 
+
+    #region 导入已经完成
+        //现在导入已经完成  但是 see 的时候要靠什么来 see  是要靠 它的id值 还是它的名称 如果是名称的话 可能会有重复的数据 根据id来查询 这个是要字典表来进行维护这个数据
+
+    #endregion
+
     [Route("api/[controller]/[action]")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "Excel")]
@@ -96,8 +102,8 @@ namespace House.API.Controllers.Excel
         /// <param name="path"></param>
         /// <param name="dateTime"></param>
         /// <returns></returns>
-        [HttpPost("ExcelRun")]
-        public async Task<string> ExcelRunGpt(string path, DateTime dateTime)
+
+        private async Task<string> ExcelRunGpt(string path, DateTime dateTime)
         {
             // 处理的总记录数
             int totalProcessedCount = 0;
@@ -169,7 +175,7 @@ namespace House.API.Controllers.Excel
                                         case 4: data.sum = cellValue; break;
                                     }
                                     break;
-                                    #endregion
+                                #endregion
 
                             }
  
@@ -209,7 +215,7 @@ namespace House.API.Controllers.Excel
                             var dic = new ExcelDic
                             {
                                 name = data.name,
-                                coding = NPinyin.Pinyin.GetPinyin(data.name),
+                                coding = NPinyin.Pinyin.GetPinyin(data.name).Replace(" ", ""),
                                 usetime = dateTime.Month.ToString(),
                                 specification = data.specification,
                                 title = title,
